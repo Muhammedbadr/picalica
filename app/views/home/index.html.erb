@@ -1,4 +1,30 @@
-<div>
-  <h1 class="font-bold text-4xl">Home#index</h1>
-  <p>Find me in app/views/home/index.html.erb</p>
+<div class="max-w-2xl mx-auto mt-16">
+
+  <h3 class="text-xl font-semibold mb-4">
+    Account
+  </h3>
+
+  <% if user_signed_in? %>
+    <div class="flex gap-4">
+      <%= link_to "Sign out",
+          destroy_user_session_path,
+          data: { turbo_method: :delete },
+          class: "px-4 py-2 bg-red-500 text-white rounded-lg" %>
+
+      <%= link_to "Edit profile",
+          edit_user_registration_path,
+          class: "px-4 py-2 bg-gray-200 rounded-lg" %>
+    </div>
+  <% else %>
+    <div class="flex gap-4">
+      <%= link_to "Sign up",
+          new_user_registration_path,
+          class: "px-4 py-2 bg-blue-600 text-white rounded-lg" %>
+
+      <%= link_to "Sign in",
+          new_user_session_path,
+          class: "px-4 py-2 bg-gray-200 rounded-lg" %>
+    </div>
+  <% end %>
+
 </div>
