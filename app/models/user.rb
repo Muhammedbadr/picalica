@@ -6,4 +6,6 @@ class User < ApplicationRecord
   
   has_many :user_roles
   belongs_to :role, optional: true
+  has_many :products 
+  
 end
