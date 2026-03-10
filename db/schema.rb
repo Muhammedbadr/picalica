@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_10_081523) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_10_081712) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -57,6 +57,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_10_081523) do
     t.string "title_name"
     t.datetime "updated_at", null: false
     t.index ["product_id"], name: "index_licenses_on_product_id"
+  end
+
+  create_table "list_tags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "description"
+    t.bigint "list_id", null: false
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.index ["list_id"], name: "index_list_tags_on_list_id"
   end
 
   create_table "lists", force: :cascade do |t|
@@ -145,6 +154,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_10_081523) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "images", "products"
   add_foreign_key "licenses", "products"
+  add_foreign_key "list_tags", "lists"
   add_foreign_key "lists", "products"
   add_foreign_key "products", "users"
   add_foreign_key "texts", "products"
