@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_10_081119) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_10_081358) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -86,6 +86,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_10_081119) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "texts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "description"
+    t.bigint "product_id", null: false
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_texts_on_product_id"
+  end
+
   create_table "user_roles", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "role_id", null: false
@@ -129,6 +138,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_10_081119) do
   add_foreign_key "images", "products"
   add_foreign_key "licenses", "products"
   add_foreign_key "products", "users"
+  add_foreign_key "texts", "products"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
   add_foreign_key "videos", "products"
