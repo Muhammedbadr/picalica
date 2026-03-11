@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_11_092729) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_11_105349) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -107,6 +107,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_11_092729) do
     t.index ["user_id"], name: "index_products_on_user_id"
   end
 
+  create_table "reviews", force: :cascade do |t|
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.bigint "product_id", null: false
+    t.integer "rating"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["product_id"], name: "index_reviews_on_product_id"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name"
@@ -182,6 +194,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_11_092729) do
   add_foreign_key "product_tags", "products"
   add_foreign_key "product_tags", "tags"
   add_foreign_key "products", "users"
+  add_foreign_key "reviews", "products"
+  add_foreign_key "reviews", "users"
   add_foreign_key "texts", "products"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
