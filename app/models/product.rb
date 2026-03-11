@@ -4,5 +4,8 @@ class Product < ApplicationRecord
 
   has_many :images, dependent: :destroy
   has_many :videos, dependent: :destroy
+  has_many :texts, dependent: :destroy   
+  has_many :lists, dependent: :destroy
   has_many :licenses, dependent: :destroy
+  has_many :product_files, dependent: :destroy
 end
