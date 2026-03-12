@@ -3,7 +3,9 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  
+  has_many :orders, dependent: :destroy
+  has_many :purchased_products, through: :orders, source: :products
+
   has_many :user_roles
   belongs_to :role, optional: true
   has_many :products 

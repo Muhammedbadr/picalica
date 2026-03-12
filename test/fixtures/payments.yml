@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  order: one
+  amount: 9.99
+  name: MyString
+  info: MyString
+  currency: MyString
+  payment_method_id: 
+  stripe_charge_id: 
+
+two:
+  order: two
+  amount: 9.99
+  name: MyString
+  info: MyString
+  currency: MyString
+  payment_method_id: 
+  stripe_charge_id: 
