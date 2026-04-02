@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :products
+  resources :products do
+    resources :payments, only: [:create]
+  end
   resources :roles
   devise_for :users, controllers: {
         sessions: 'users/sessions'
