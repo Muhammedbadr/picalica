@@ -1,0 +1,12 @@
+<h1>Checkout</h1>
+
+<div class="product-info">
+  <h3><%= @product.title %></h3>
+  <p><%= @product.description %></p>
+</div>
+
+<%# This button sends a POST request to your PaymentsController %>
+<%= button_to "Buy Product", product_payments_path(product_id: @product.id), 
+    method: :post, 
+    remote: true, 
+    class: "btn-stripe" %>

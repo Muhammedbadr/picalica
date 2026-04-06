@@ -1,22 +1,37 @@
-<div id="<%= dom_id product %>" class="w-full sm:w-auto my-5 space-y-5">
+<div id="<%= dom_id product %>" class="w-full sm:w-auto my-5 space-y-5 p-6 bg-white shadow rounded-lg">
+  
+  <%# Name is 'title' in your schema %>
   <div>
-    <strong class="block font-medium mb-1">Name:</strong>
-    <%= product.name %>
+    <strong class="block font-medium mb-1">Title:</strong>
+    <%= product.title %>
   </div>
+
+  <%# Using 'heading' from your schema as a subtitle %>
+  <div>
+    <strong class="block font-medium mb-1">Heading:</strong>
+    <%= product.heading %>
+  </div>
+
   <div>
     <strong class="block font-medium mb-1">Description:</strong>
     <%= product.description %>
   </div>
+
+  <%# IMPORTANT: Check if you added the price column yet! %>
   <div>
     <strong class="block font-medium mb-1">Price:</strong>
-    <%= product.price %>
+    <%= number_to_currency(product.try(:price)) || "Price not set" %>
   </div>
+
+  <%# Displaying the User's email instead of just a boring ID number %>
   <div>
-    <strong class="block font-medium mb-1">User:</strong>
-    <%= product.user_id %>
+    <strong class="block font-medium mb-1">Posted By:</strong>
+    <%= product.user.email %> 
   </div>
-  <div>
-    <strong class="block font-medium mb-1">Subcategory:</strong>
-    <%= product.subcategory_id %>
-  </div>
+
+  <%# Checking if it is an exclusive product %>
+  <% if product.exclusive_product %>
+    <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded">Exclusive</span>
+  <% end %>
+
 </div>
