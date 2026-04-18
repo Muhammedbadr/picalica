@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
   resources :products do
     resources :payments
-    resources :licsenses
+    resources :licenses
   end
+  
   
   resources :roles
   devise_for :users, controllers: {

@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+  # before_action :authenticate_user!
+
   belongs_to :user
   belongs_to :subcategory , optional: true 
   

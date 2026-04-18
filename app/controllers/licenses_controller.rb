@@ -1,2 +1,3 @@
 class LicensesController < ApplicationController
+  
 end

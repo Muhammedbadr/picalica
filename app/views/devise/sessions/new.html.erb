@@ -1,26 +1,83 @@
-<h2>Log in</h2>
+<div class="min-h-screen w-full flex items-center justify-center bg-gray-50">
+  <%# Main Container %>
+  <div class="flex w-full min-h-screen sm:min-h-0 sm:max-w-4xl bg-white sm:rounded-3xl sm:shadow-2xl overflow-hidden border border-gray-100">
+    
+    <%# Left Side: Branding (Hidden on mobile) %>
+    <div class="hidden lg:flex lg:w-1/2 bg-[#5D5899] p-12 flex-col justify-between text-white relative">
+      <%# Background Overlay for texture %>
+      <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+      
+      <div class="relative z-10">
+        <div class="text-2xl font-black tracking-tighter">Picalica</div>
+      </div>
+      
+      <div class="relative z-10">
+        <h2 class="text-4xl font-extrabold mb-4 leading-tight">Empowering your <br>creative journey.</h2>
+        <p class="text-indigo-100 text-lg opacity-90">Join the marketplace where digital artisans thrive.</p>
+      </div>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
-  </div>
-
-  <div class="field">
-    <p><%= f.label :password %></p>
-    <p><%= f.password_field :password, autocomplete: "current-password" %></p>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <p><%= f.check_box :remember_me %></p>
-      <p><%= f.label :remember_me %></p>
+      <div class="relative z-10 text-xs font-medium opacity-50 uppercase tracking-widest">
+        &copy; 2026 Picalica Marketplace
+      </div>
     </div>
-  <% end %>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
+    <%# Right Side: Login Form %>
+    <div class="w-full lg:w-1/2 px-8 py-12 sm:px-16 flex flex-col justify-center bg-white">
+      
+      <%# Mobile Logo %>
+      <div class="lg:hidden flex justify-center mb-10">
+        <div class="text-3xl font-black text-[#5D5899] tracking-tighter">Picalica</div>
+      </div>
+
+      <div class="mb-10 text-center lg:text-left">
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-2">Welcome Back</h1>
+        <p class="text-gray-500 font-medium">Log in to manage your digital assets.</p>
+      </div>
+
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-6" }) do |f| %>
+        
+        <div class="space-y-2">
+          <%= f.label :email, class: "text-xs font-bold text-gray-700 uppercase tracking-wider" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", 
+              placeholder: "name@example.com",
+              class: "w-full px-4 py-3.5 rounded-2xl border border-gray-200 bg-gray-50 text-gray-900 focus:bg-white focus:ring-2 focus:ring-[#5D5899] focus:border-transparent transition-all outline-none font-medium" %>
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <%= f.label :password, class: "text-xs font-bold text-gray-700 uppercase tracking-wider" %>
+            <%- if devise_mapping.recoverable? %>
+              <%= link_to "Forgot Password?", new_password_path(resource_name), class: "text-xs font-bold text-[#5D5899] hover:underline" %>
+            <% end %>
+          </div>
+          <%= f.password_field :password, autocomplete: "current-password", 
+              placeholder: "••••••••",
+              class: "w-full px-4 py-3.5 rounded-2xl border border-gray-200 bg-gray-50 text-gray-900 focus:bg-white focus:ring-2 focus:ring-[#5D5899] focus:border-transparent transition-all outline-none" %>
+        </div>
+
+        <div class="flex items-center">
+          <% if devise_mapping.rememberable? %>
+            <div class="flex items-center">
+              <%= f.check_box :remember_me, class: "h-4 w-4 text-[#5D5899] focus:ring-[#5D5899] border-gray-300 rounded cursor-pointer" %>
+              <%= f.label :remember_me, class: "ml-2 block text-sm font-medium text-gray-600 cursor-pointer" %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="pt-2">
+          <%= f.submit "Sign In", 
+              class: "w-full py-4 px-6 bg-[#5D5899] hover:bg-[#4d4885] text-white font-black rounded-2xl shadow-xl shadow-indigo-100 hover:shadow-indigo-200 transform hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-200 cursor-pointer uppercase tracking-widest text-sm" %>
+        </div>
+      <% end %>
+
+      <%# Bottom Section %>
+      <div class="mt-12 text-center">
+        <p class="text-gray-500 text-sm font-medium">
+          New to the community? 
+          <%= link_to "Create an account", new_registration_path(resource_name), class: "font-black text-[#5D5899] hover:text-[#4d4885] ml-1" %>
+        </p>
+      </div>
+
+    </div>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

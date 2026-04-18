@@ -1,0 +1,72 @@
+<div class="fixed top-24 right-6 z-[100] flex flex-col gap-4 w-full max-w-sm pointer-events-none">
+  
+  <%# --- SUCCESS NOTICE --- %>
+  <% if notice.present? %>
+    <div class="pointer-events-auto flex items-start gap-4 p-4 rounded-2xl bg-white border border-gray-100 shadow-[0_10px_40px_rgba(0,0,0,0.1)] transition-all duration-500 animate-in fade-in slide-in-from-right-10">
+      <%# SVG Success Icon %>
+      <div class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center border border-emerald-100">
+        <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </div>
+      
+      <div class="flex-1">
+        <h3 class="text-sm font-bold text-gray-900">Successfully saved!</h3>
+        <p class="text-xs text-gray-500 mt-0.5"><%= notice %></p>
+      </div>
+
+      <button onclick="this.parentElement.remove()" class="text-gray-300 hover:text-gray-400 transition-colors p-1 cursor-pointer">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+  <% end %>
+
+  <%# --- ERROR ALERT --- %>
+  <% if alert.present? %>
+    <div class="pointer-events-auto flex items-start gap-4 p-4 rounded-2xl bg-white border border-gray-100 shadow-[0_10px_40px_rgba(0,0,0,0.1)] transition-all duration-500 animate-in fade-in slide-in-from-right-10">
+      <%# SVG Error Icon %>
+      <div class="flex-shrink-0 w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center border border-rose-100">
+        <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+        </svg>
+      </div>
+      
+      <div class="flex-1">
+        <h3 class="text-sm font-bold text-gray-900">Attention required</h3>
+        <p class="text-xs text-gray-500 mt-0.5"><%= alert %></p>
+      </div>
+
+      <button onclick="this.parentElement.remove()" class=" cursor-pointer text-gray-300 hover:text-gray-400 transition-colors p-1">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+  <% end %>
+
+</div>
+
+<script>
+  // Robust auto-hide script
+  const setupAlerts = () => {
+    document.querySelectorAll('.pointer-events-auto').forEach(el => {
+      // Avoid double timers
+      if (el.dataset.active === "true") return;
+      el.dataset.active = "true";
+
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateX(24px) scale(0.95)';
+        el.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+        setTimeout(() => el.remove(), 600);
+      }, 5000);
+    });
+  };
+
+  // Run on page load and every time Turbo changes the page
+  setupAlerts();
+  document.addEventListener("turbo:load", setupAlerts);
+</script>
