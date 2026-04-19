@@ -1,9 +1,323 @@
-<% content_for :title, "New product" %>
+<div class="  px-4 py-12" id="multi-step-form">
+    <%# <div class="w-full pt-4 pb-4 px-4">
+      <div class="max-w-2xl mx-auto text-center space-y-4">
+        
+       
+        <h1 class="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+          Create New Product
+        </h1>
 
-<div class="md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">New product</h1>
+        
+        <div class="flex items-center justify-center space-x-2">
+          <span class="h-px w-8 bg-gray-200"></span>
+          <p class="text-xs md:text-sm text-gray-400 font-bold uppercase tracking-[0.2em]">
+            Marketplace Inventory System
+          </p>
+          <span class="h-px w-8 bg-gray-200"></span>
+        </div>
 
-  <%= render "form", product: @product %>
+        
+        
 
-  <%= link_to "Back to products", products_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+      </div>
+    </div>  %>
+  <%# --- DYNAMIC STEPPER   --- %>
+  <div class=" max-w-2xl mx-auto mt-4 relative px-4">
+    <div class="flex items-center justify-between relative z-10">
+      <%# Step 1 %>
+      <div class="step-item flex flex-col items-center" data-step="1">
+        <div class="step-circle w-10 h-10 rounded-full bg-[#34A8DA] text-white flex items-center justify-center transition-all duration-500 ring-4 ring-blue-50">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+          </svg>
+        </div>
+        <span class="mt-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest">General</span>
+      </div>
+
+      <%# Step 3 %>
+      <div class="step-item flex flex-col items-center opacity-40" data-step="3">
+        <div class="step-circle w-10 h-10 rounded-full bg-white border-2 border-gray-300 text-gray-400 flex items-center justify-center transition-all duration-500">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <span class="mt-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Market</span>
+      </div>
+    </div>
+
+    <%# Progress Line Background %>
+    <div class="absolute top-5 left-10 right-10 h-[2px] bg-gray-200 -z-0"></div>
+    <%# Dynamic Filling Line %>
+    <div id="progress-bar" class="absolute top-5 left-10 h-[2px] bg-[#34A8DA] -z-0 transition-all duration-500 w-0"></div>
+  </div>
+
+  <%# --- FORM CONTAINER --- %>
+  <%= form_with(model: @product, local: true, class: "max-w-5xl mx-auto space-y-10 ") do |f| %>
+    
+    <%# PART 1:  %>
+    <div class="form-section  md:p-12 space-y-8" id="section-1">
+        
+        <%# SECTION 1: CORE IDENTITY %>
+        <div class="bg-white rounded-[2rem] p-10 mt-10 border border-gray-100 shadow-sm space-y-8 ">
+          
+          <div class="flex items-center space-x-4 border-b border-gray-50 pb-6">
+            <div class="w-10 h-10 rounded-xl bg-[#5D5899]/10 flex items-center justify-center text-[#5D5899]">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-black text-gray-900 tracking-tight">General Information</h3>
+              <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Basic product identification</p>
+            </div>
+          </div>
+          
+          <div class="space-y-6">
+            <div class="space-y-2">
+              <%= f.label :title, "Product Title", class: "text-[11px] font-black text-gray-500 uppercase tracking-widest ml-1" %>
+              <%= f.text_field :title, placeholder: "e.g. Premium Shopify Dashboard", class: "w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-[#5D5899]/5 focus:border-[#5D5899] outline-none transition-all font-medium text-gray-900 shadow-inner" %>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="space-y-2">
+                <%= f.label :category_id, "Classification", class: "text-[11px] font-black text-gray-500 uppercase tracking-widest ml-1" %>
+                <%= f.select :category_id, ["Shopify", "Wordpress", "Graphics", "HTML Templates"], {}, class: "w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-[#5D5899]/5 outline-none font-bold text-gray-700 cursor-pointer appearance-none shadow-inner" %>
+              </div>
+              <div class="space-y-2">
+                <%= f.label :preview_url, "Live Demonstration Link", class: "text-[11px] font-black text-gray-500 uppercase tracking-widest ml-1" %>
+                <%= f.text_field :preview_url, placeholder: "https://example.com/demo", class: "w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-[#5D5899]/5 outline-none transition-all font-medium shadow-inner" %>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <%= f.label :tags, "Search Tags", class: "text-[11px] font-black text-gray-500 uppercase tracking-widest ml-1" %>
+              <%= f.text_field :tags, placeholder: "(e.g. Modern, UI, Minimasl)", class: "w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-[#5D5899]/5 outline-none transition-all font-medium shadow-inner" %>
+            </div>
+          </div>
+
+          <%# SECTION 2: TECHNICAL SPECIFICATIONS & RELEASES %>
+          <div class="flex items-center space-x-4 border-b border-gray-50 pb-6">
+            <div class="w-10 h-10 rounded-xl bg-[#5D5899]/10 flex items-center justify-center text-[#5D5899]">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-black text-gray-900 tracking-tight">Technical & Release Details</h3>
+              <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Platform and version control</p>
+            </div>
+          </div>
+
+          <div class="space-y-8">
+            <%# File Type Checkboxes (from your screenshot) %>
+            <div class="space-y-4">
+              <span class="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Included Technologies</span>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <% ["Java", "PHP", "JavaScript", "HTML", "Liquid", "CSS", "Ruby"].each do |tech| %>
+                  <label class="flex items-center space-x-3 p-4 rounded-2xl bg-gray-50 hover:bg-[#5D5899]/5 border border-transparent hover:border-[#5D5899]/20 transition-all cursor-pointer group">
+                    <%= check_box_tag "product[tech][]", tech, false, class: "w-5 h-5 rounded-lg border-gray-200 text-[#5D5899] focus:ring-[#5D5899]" %>
+                    <span class="text-sm font-bold text-gray-600 group-hover:text-[#5D5899]"><%= tech %></span>
+                  </label>
+                <% end %>
+              </div>
+            </div>
+
+            <%# Versioning Section %>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+              <div class="space-y-2">
+                <%= f.label :version, "Release Number", class: "text-[11px] font-black text-gray-500 uppercase tracking-widest ml-1" %>
+                <%= f.text_field :version, placeholder: "e.g. 1.0.0", class: "w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 outline-none font-black text-gray-900 shadow-inner" %>
+              </div>
+              <div class="space-y-4">
+                <span class="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1 text-xs">Supported Ecosystems</span>
+                <label class="flex items-center space-x-3 p-4 rounded-2xl bg-indigo-50 border border-indigo-100 shadow-sm">
+                  <%= check_box_tag "product[releases][]", "Shopify 2.0", true, class: "w-5 h-5 rounded-lg text-[#5D5899]" %>
+                  <span class="text-sm font-black text-[#5D5899]">Shopify 2.0 Native</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <%= f.label :release_notes, "Brief about Release", class: "text-[11px] font-black text-gray-500 uppercase tracking-widest ml-1" %>
+              <%= f.text_area :release_notes, rows: 3, placeholder: "What's new in this version?", class: "w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 outline-none font-medium text-gray-900 shadow-inner resize-none" %>
+            </div>
+          </div>
+
+          <%# SECTION 3: PRICING & FINAL ASSETS %>
+          <div class="flex items-center space-x-4 border-b border-gray-50 pb-6">
+            <div class="w-10 h-10 rounded-xl bg-[#5D5899]/10 flex items-center justify-center text-[#5D5899]">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-black text-gray-900 tracking-tight">Investment & Final Push</h3>
+              <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Pricing, assets, and legal</p>
+            </div>
+          </div>
+
+          <%# Pricing Toggle %>
+          <div class="flex flex-col md:flex-row gap-8 items-start">
+            <div class="w-full md:w-1/3 space-y-4">
+              <span class="text-[11px] font-black text-gray-400 uppercase tracking-widest">Marketplace Rights</span>
+              <div class="p-1.5 bg-gray-100 rounded-2xl flex items-center shadow-inner">
+                <label class="flex-1 text-center py-3 rounded-xl cursor-pointer transition-all has-[:checked]:bg-white has-[:checked]:text-[#5D5899] has-[:checked]:shadow-md text-gray-400 font-black text-[10px] uppercase tracking-tighter">
+                  <%= f.radio_button :exclusive, true, class: "hidden" %> Exclusive
+                </label>
+                <label class="flex-1 text-center py-3 rounded-xl cursor-pointer transition-all has-[:checked]:bg-white has-[:checked]:text-[#5D5899] has-[:checked]:shadow-md text-gray-400 font-black text-[10px] uppercase tracking-tighter">
+                  <%= f.radio_button :exclusive, false, class: "hidden", checked: true %> Standard
+                </label>
+              </div>
+            </div>
+
+            <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+              <div class="space-y-2">
+                <%= f.label :price, "Price (USD)", class: "text-[11px] font-black text-gray-500 uppercase tracking-widest ml-1" %>
+                <div class="relative group">
+                  <span class="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 font-black text-xl group-focus-within:text-[#5D5899] transition-colors">$</span>
+                  <%= f.number_field :price, placeholder: "0.00", class: "w-full pl-12 pr-6 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white outline-none font-black text-xl shadow-inner" %>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <%= f.label :license, "License Structure", class: "text-[11px] font-black text-gray-500 uppercase tracking-widest ml-1" %>
+                <%= f.select :license, ["Personal Use", "Commercial License", "Extended Rights"], {}, class: "w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white outline-none font-bold shadow-inner cursor-pointer" %>
+              </div>
+            </div>
+          </div>
+
+          <%# Asset Dropzone (from your screenshot) %>
+          <div class="space-y-4">
+            <span class="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Master Files</span>
+            <label class="block group cursor-pointer">
+              <div class="border-2 border-dashed border-gray-200 rounded-[2.5rem] p-12 flex flex-col items-center justify-center bg-gray-50/50 group-hover:bg-white group-hover:border-[#5D5899] group-hover:shadow-2xl group-hover:shadow-[#5D5899]/5 transition-all duration-500">
+                <div class="w-20 h-20 bg-white rounded-3xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#5D5899]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                  </svg>
+                </div>
+                <h4 class="text-lg font-black text-gray-900 tracking-tight">Drop your product archive</h4>
+                <p class="text-xs text-gray-400 mt-2 font-bold uppercase tracking-widest opacity-60">ZIP, PDF, or JPG up to 500MB</p>
+                <%= f.file_field :file, class: "hidden" %>
+              </div>
+            </label>
+          </div>
+
+          <%# LEGAL AGREEMENTS (from your Arabic screenshots) %>
+          <div class="bg-indigo-50/50 rounded-[2rem] p-8 space-y-4 border border-indigo-100/50">
+            <label class="flex items-start space-x-4 cursor-pointer group">
+              <%= f.check_box :terms_agreement, class: "mt-1 w-6 h-6 rounded-lg text-[#5D5899] border-indigo-200 focus:ring-[#5D5899]" %>
+              <span class="text-sm font-bold text-gray-600 group-hover:text-gray-900 transition-colors leading-relaxed">
+                I agree to the <span class="text-[#5D5899] underline">Picalica Terms of Service</span> and Marketplace Guidelines.
+              </span>
+            </label>
+            <label class="flex items-start space-x-4 cursor-pointer group">
+              <%= f.check_box :ownership_confirmation, class: "mt-1 w-6 h-6 rounded-lg text-[#5D5899] border-indigo-200 focus:ring-[#5D5899]" %>
+              <span class="text-sm font-bold text-gray-600 group-hover:text-gray-900 transition-colors leading-relaxed">
+                I confirm that this product was created entirely by me and I hold full distribution rights.
+              </span>
+            </label>
+          </div>
+
+          <%# Action Bar %>
+          
+          <div class="flex justify-between flex-col sm:flex-row items-center gap-6 pt-6"> 
+
+            <%= link_to "Discard Draft", products_path, 
+                class: "text-[11px] font-black text-gray-400 hover:text-rose-500 uppercase tracking-[0.2em] transition-colors px-6" %>
+            <button type="button" onclick="changeStep(2)" class="w-auto px-6 py-5 bg-[#5D5899] hover:bg-[#4d4885] text-white font-black rounded-3xl shadow-xl shadow-indigo-200 transform hover:-translate-y-1 active:scale-95 transition-all uppercase tracking-[0.2em] text-xs cursor-pointer">Next Step</button>
+          
+          </div>
+          <%= f.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+
+        </div>
+    </div>
+ 
+
+    <%# PART 2:  %>
+    <div class="form-section p-8 md:p-12 space-y-8 hidden" id="section-2">
+      <div class="space-y-1">
+        <h2 class="text-xl font-bold text-gray-900">Market & Assets</h2>
+        <p class="text-sm text-gray-400">Finalize pricing and upload files.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="space-y-2">
+          <%= f.label :price, class: "text-[10px] font-bold text-gray-400 uppercase tracking-widest" %>
+          <div class="flex items-center border-b-2 border-gray-100">
+            <span class="text-gray-300 text-xl font-bold mr-2">$</span>
+            <%= f.number_field :price, class: "w-full py-3 outline-none text-xl font-bold" %>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Master File</label>
+          <%= f.file_field :file, class: "text-xs font-bold text-gray-500 pt-3" %>
+        </div>
+      </div>
+
+      <div class="pt-8 space-y-6">
+        <label class="flex items-start space-x-3 cursor-pointer group">
+          <input type="checkbox" class="mt-1 w-5 h-5 rounded text-green-500 border-gray-300 focus:ring-0">
+          <span class="text-xs font-bold text-gray-500 group-hover:text-gray-900 uppercase tracking-wider leading-relaxed">I confirm ownership and agree to terms.</span>
+        </label>
+
+        
+      </div>
+      <div class="pt-8 space-y-6">
+
+        <label class="flex items-start space-x-3 cursor-pointer group">
+          <input type="checkbox" class="mt-1 w-5 h-5 rounded text-green-500 border-gray-300 focus:ring-0">
+          <span class="text-xs font-bold text-gray-500 group-hover:text-gray-900 uppercase tracking-wider leading-relaxed">I confirm ownership and agree to terms.</span>
+        </label>
+
+        <div class="flex justify-between items-center">
+          <button type="button" onclick="changeStep(1)" class="cursor-pointer text-xs font-bold text-gray-400 uppercase tracking-widest">Back</button>
+          <%# <%= f.submit "Publish Product", class: "px-10 py-5 bg-[#79C343] text-white rounded-xl font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-green-100 cursor-pointer hover:scale-105 transition-all" %> %>
+        </div>
+      </div>
+    </div>
+   <% end %>
 </div>
+
+<script>
+  function changeStep(step) {
+    // 1. Hide all sections
+    document.querySelectorAll('.form-section').forEach(section => section.classList.add('hidden'));
+    
+    // 2. Show target section
+    document.getElementById('section-' + step).classList.remove('hidden');
+
+    // 3. Update Progress Bar Line
+    const progressLine = document.getElementById('progress-bar');
+    if(step === 1) progressLine.style.width = '0%';
+    if(step === 2) progressLine.style.width = '90%';
+
+    // 4. Update Stepper Icons
+    document.querySelectorAll('.step-item').forEach((item, index) => {
+      const currentIdx = index + 1;
+      const circle = item.querySelector('.step-circle');
+      
+      if(currentIdx < step) { // Completed
+        item.style.opacity = '1';
+        circle.style.backgroundColor = '#79C343'; // Green
+        circle.style.borderColor = '#79C343';
+        circle.classList.remove('ring-4', 'ring-blue-50');
+
+      } else if(currentIdx === step) { // Active
+        item.style.opacity = '1';
+        circle.style.backgroundColor = '#34A8DA'; // Blue
+        circle.style.borderColor = '#34A8DA';
+        circle.classList.add('ring-4', 'ring-blue-50');
+        
+      } else { // Future
+        item.style.opacity = '0.4';
+        circle.style.backgroundColor = '#ffffff';
+        circle.style.borderColor = '#e5e7eb';
+        circle.classList.remove('ring-4', 'ring-blue-50');
+
+      }
+    });
+  }
+</script>
+
+        <%# icon-step.style.color = "white "; %>
+      

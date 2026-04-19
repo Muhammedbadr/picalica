@@ -1,21 +1,21 @@
-<nav class="fixed top-0 z-50 w-full bg-[#5D5899]/95 backdrop-blur-sm text-white shadow-sm">
+<nav class="fixed top-0 z-50 w-full bg-[#5D5899] backdrop-blur-sm text-white shadow-sm">
   <div class="max-w-[1440px] mx-auto px-4 sm:px-8">
     <div class="flex justify-between h-16 items-center">
       
       <%# RIGHT SIDE: Branding %>
       <div class="flex items-center gap-10">
-        <%= link_to root_path, class: "flex items-center gap-2.5 group shrink-0" do %>
-          <div class="w-9 h-9 bg-white text-[#5D5899] rounded-xl flex items-center justify-center shadow-inner group-hover:rotate-6 transition-transform duration-300">
-             <span class="font-black text-xl">P</span>
+        
+        <a href="/" class="flex items-center space-x-2 group">
+          <div class="bg-white text-[#5D5899] p-1.5 rounded-lg">
+            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
           </div>
-          <span class="text-2xl font-black tracking-tighter hidden sm:block">Picalica</span>
-        <% end %>
-
+          <span class="text-xl font-black tracking-tighter uppercase">Picalica</span>
+        </a>
         <%# Nav Links with custom hover under-line effect %>
         <div class="hidden lg:flex items-center gap-8">
           <% if user_signed_in? %>
-            <%= link_to "Upload Product +", "#", class: "text-sm font-bold bg-white/10 px-3 py-1.5 rounded-lg hover:bg-white/20 transition-all" %>
-            <%= link_to "My Products", "#", class: "text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity" %>
+            <%= link_to "Upload Product +",  new_product_path, class: "text-sm font-bold bg-white/10 px-3 py-1.5 rounded-lg hover:bg-white/20 transition-all" %>
+            <%= link_to "My Products", products_path, class: "text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity" %>
           <% end %>
           <%= link_to "Categories", "#", class: "text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity" %>
         </div>
@@ -54,10 +54,10 @@
             </div>
           <% end %>
 
-          <%# Mobile Menu %>
+          <%# Mobile Menu
           <button class="lg:hidden w-10 h-10 flex items-center justify-center bg-white/10 rounded-lg">
             <i class="fa-solid fa-bars-staggered text-xl"></i>
-          </button>
+          </button> %>
         </div>
       </div>
     </div>

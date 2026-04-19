@@ -1,7 +1,9 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: %i[ show edit update destroy ]
-
-  # GET /products or /products.json
+  before_action :authenticate_user!
+  # before_action :require_seller, only: [:new, :create]
+  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :authorize_owner!, only: [:edit, :update, :destroy]
+  
   def index
     @products = Product.all
   end
@@ -22,16 +24,12 @@ class ProductsController < ApplicationController
 
   # POST /products or /products.json
   def create
-    @product = Product.new(product_params)
+    @product = current_user.products.build(product_params)
 
-    respond_to do |format|
-      if @product.save
-        format.html { redirect_to @product, notice: "Product was successfully created." }
-        format.json { render :show, status: :created, location: @product }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
-      end
+    if @product.save
+      redirect_to @product, notice: "Product was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -63,9 +61,24 @@ class ProductsController < ApplicationController
     def set_product
       @product = Product.find(params.expect(:id))
     end
-
+    
     # Only allow a list of trusted parameters through.
     def product_params
-      params.require(:product).permit(:name, :description, :price, :user_id, :subcategory_id)
+      params.require(:product).permit(
+        :heading,
+        :title,
+        :description,
+        :story,
+        :position,
+        :exclusive_product,
+        :issue_number,
+        :subcategory_id
+      )
+    end
+
+    def authorize_owner!
+      unless @product.user == current_user
+        redirect_to products_path, alert: "Not authorized"
+      end
     end
 end
