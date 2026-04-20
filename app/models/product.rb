@@ -17,4 +17,7 @@ class Product < ApplicationRecord
   has_many :lists, dependent: :destroy
   has_many :licenses, dependent: :destroy
   has_many :product_files, dependent: :destroy
+  
+  accepts_nested_attributes_for :licenses, allow_destroy: true
+
 end

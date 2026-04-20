@@ -6,6 +6,7 @@ class ProductsController < ApplicationController
   
   def index
     @products = Product.all
+    
   end
 
   # GET /products/1 or /products/1.json
@@ -16,6 +17,10 @@ class ProductsController < ApplicationController
   # GET /products/new
   def new
     @product = Product.new
+   
+
+    @product.images.build
+    @product.licenses.build
   end
 
   # GET /products/1/edit
@@ -72,9 +77,11 @@ class ProductsController < ApplicationController
         :position,
         :exclusive_product,
         :issue_number,
-        :subcategory_id
+        :subcategory_id,
+        licenses_attributes: [:id, :price, :title_name, :_destroy]
       )
     end
+    
 
     def authorize_owner!
       unless @product.user == current_user

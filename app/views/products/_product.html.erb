@@ -18,11 +18,14 @@
   </div>
 
   <%# IMPORTANT: Check if you added the price column yet! %>
-  <div>
-    <strong class="block font-medium mb-1">Price:</strong>
-    <%= number_to_currency(product.try(:price)) || "Price not set" %>
-  </div>
-
+  <% product.licenses.each do |license| %>
+    <div class="text-sm">
+      <span><%= license.title_name %></span> -
+      <span class="font-bold">
+        <%= number_to_currency(license.price) %>
+      </span>
+    </div>
+  <% end %>
   <%# Displaying the User's email instead of just a boring ID number %>
   <div>
     <strong class="block font-medium mb-1">Posted By:</strong>

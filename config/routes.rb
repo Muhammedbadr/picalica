@@ -1,9 +1,15 @@
 Rails.application.routes.draw do
   resources :products do
+    resources :texts
+    resources :lists do
+      resources :list_tags
+    end
+    resources :product_files
+    resources :views
+    resources :images
     resources :payments
     resources :licenses
   end
-  
   
   resources :roles
   devise_for :users, controllers: {
