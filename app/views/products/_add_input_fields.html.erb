@@ -1,0 +1,19 @@
+                    
+<%= form_with(model: @product, class: "contents") do |form| %>
+    <%= f.fields_for :licenses do |l| %>
+
+        <div class="space-y-2">
+            <%= l.label :price , "Price (USD)", class: "text-[11px] font-black text-gray-500 uppercase tracking-widest ml-1" %>
+            <div class="relative group">
+            <span class="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 font-black text-xl">$</span>
+            <%= l.number_field :price, placeholder: "0.00", class: "w-full pl-12 pr-6 py-4 rounded-2xl border border-gray-100 bg-gray-100/50 outline-none font-black text-xl shadow-inner" %>
+            </div>
+        </div>
+
+                        <!-- License Name -->
+        <div class="space-y-2">
+            <%= l.label :title_name, "License Type", class: "text-[11px] font-black text-gray-500 uppercase tracking-widest ml-1" %>
+            <%= l.select :title_name, ["Personal Use", "Commercial License"], {}, class: "w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-100/50 outline-none font-bold shadow-inner" %>
+        </div>
+    <% end %>
+<% end %>
