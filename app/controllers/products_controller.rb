@@ -19,8 +19,9 @@ class ProductsController < ApplicationController
     @product = Product.new
    
 
-    @product.images.build
+    # @product.images.build
     @product.licenses.build
+    @product.product_files.build
   end
 
   # GET /products/1/edit
@@ -30,10 +31,12 @@ class ProductsController < ApplicationController
   # POST /products or /products.json
   def create
     @product = current_user.products.build(product_params)
+    
 
     if @product.save
       redirect_to @product, notice: "Product was successfully created."
     else
+      puts @product.errors.full_messages
       render :new, status: :unprocessable_entity
     end
   end
@@ -78,8 +81,10 @@ class ProductsController < ApplicationController
         :exclusive_product,
         :issue_number,
         :subcategory_id,
-        licenses_attributes: [:id, :price, :title_name, :_destroy]
-      )
+        licenses_attributes: [:id, :price, :title_name, :_destroy],
+        # images_attributes: [:id, :_destroy]
+        product_files_attributes: [:id, :attachment, :_destroy]   
+    )
     end
     
 

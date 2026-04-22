@@ -11,7 +11,7 @@ class Product < ApplicationRecord
   
   has_many :reviews, dependent: :destroy
 
-  has_many :images, dependent: :destroy
+  has_many_attached :images, dependent: :destroy
   has_many :videos, dependent: :destroy
   has_many :texts, dependent: :destroy   
   has_many :lists, dependent: :destroy
@@ -19,5 +19,12 @@ class Product < ApplicationRecord
   has_many :product_files, dependent: :destroy
   
   accepts_nested_attributes_for :licenses, allow_destroy: true
-
+  accepts_nested_attributes_for :product_files, allow_destroy: true, reject_if: :all_blank
+# app/models/product.rb
+  validates :product_files, length: { 
+      minimum: 1, 
+      maximum: 5, 
+      message: "must have between 1 and 5 files" 
+    }
+  # accepts_nested_attributes_for :images, allow_destroy: true
 end

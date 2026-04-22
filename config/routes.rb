@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  
   resources :products do
     resources :texts
     resources :lists do
@@ -9,12 +10,16 @@ Rails.application.routes.draw do
     resources :images
     resources :payments
     resources :licenses
+    resources :tags, only: [:index, :create, :destroy]
+
   end
-  
+  resources :users do 
+    resources :profiles
+  end 
   resources :roles
   devise_for :users, controllers: {
-        sessions: 'users/sessions'
-      }
+        # sessions: 'users/sessions'
+    }
 
   
    root to: "home#index"
