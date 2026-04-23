@@ -1,0 +1,24 @@
+<label class="block group cursor-pointer">
+  <div class="border-2 border-dashed border-gray-200 rounded-[2.5rem] p-12 flex flex-col items-center justify-center bg-gray-100/50 group-hover:bg-white group-hover:border-[#5D5899] group-hover:shadow-2xl group-hover:shadow-[#5D5899]/5 transition-all duration-500">
+    
+    <div class="w-20 h-20 bg-white rounded-3xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#5D5899]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+      </svg>
+    </div>
+    <h4 id="file-label" class="text-lg font-black text-gray-900 tracking-tight">Drop your product archive</h4>
+    <p class="text-xs text-gray-400 mt-2 font-bold uppercase tracking-widest opacity-60">ZIP, PDF, or JPG up to 500MB</p>
+    
+    <%= f.fields_for :product_files do |ff| %>
+      <div class="space-y-4 mt-4">
+        <span class="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Master Files</span>
+        
+        <label class="block group cursor-pointer">
+          <div class="border-2 border-dashed ... (all your tailwind classes) ...">
+            <%= ff.file_field :attachment, class: "hidden", onchange: "updateFileName(this)" %>
+          </div>
+        </label>
+      </div>
+    <% end %>
+  </div>
+</label>

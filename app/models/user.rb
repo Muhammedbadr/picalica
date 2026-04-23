@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :products 
   has_many :reviews, dependent: :destroy
   has_one_attached :avatar
+  # has_one :images
 
   after_create do 
     customer = Stripe::Customer.create(email: email)

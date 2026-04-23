@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  
+ 
+  resources :users
+ 
   resources :products do
     resources :texts
     resources :lists do
@@ -13,9 +15,9 @@ Rails.application.routes.draw do
     resources :tags, only: [:index, :create, :destroy]
 
   end
-  resources :users do 
-    resources :profiles
-  end 
+  # resources :users do 
+  #   resources :profiles
+  # end 
   resources :roles
   devise_for :users, controllers: {
         # sessions: 'users/sessions'

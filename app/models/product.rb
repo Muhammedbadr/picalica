@@ -26,5 +26,8 @@ class Product < ApplicationRecord
       maximum: 5, 
       message: "must have between 1 and 5 files" 
     }
+  validates :preview_url, 
+    format: { with: URI::DEFAULT_PARSER.make_regexp,
+    message: "must be a valid URL" }, allow_blank: true
   # accepts_nested_attributes_for :images, allow_destroy: true
 end

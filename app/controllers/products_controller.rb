@@ -78,11 +78,12 @@ class ProductsController < ApplicationController
         :description,
         :story,
         :position,
+        :preview_url,
         :exclusive_product,
         :issue_number,
         :subcategory_id,
         licenses_attributes: [:id, :price, :title_name, :_destroy],
-        # images_attributes: [:id, :_destroy]
+        images_attributes: [:id, :title , :_destroy  , images: [] ],
         product_files_attributes: [:id, :attachment, :_destroy]   
     )
     end
