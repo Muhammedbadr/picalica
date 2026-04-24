@@ -1,4 +1,4 @@
-<div class="  px-4 py-12" id="multi-step-form">
+<div class="px-4 py-12" id="multi-step-form">
     <%# <div class="w-full pt-4 pb-4 px-4">
       <div class="max-w-2xl mx-auto text-center space-y-4">
         
@@ -21,35 +21,6 @@
 
       </div>
     </div>  %>
-  <%# --- DYNAMIC STEPPER   --- %>
-  <div class=" max-w-2xl mx-auto mt-4 relative px-4">
-    <div class="flex items-center justify-between relative z-10">
-      <%# Step 1 %>
-      <div class="step-item flex flex-col items-center" data-step="1">
-        <div class="step-circle w-10 h-10 rounded-full bg-[#34A8DA] text-white flex items-center justify-center transition-all duration-500 ring-4 ring-blue-50">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-          </svg>
-        </div>
-        <span class="mt-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest">General</span>
-      </div>
-
-      <%# Step 3 %>
-      <div class="step-item flex flex-col items-center opacity-40" data-step="3">
-        <div class="step-circle w-10 h-10 rounded-full bg-white border-2 border-gray-300 text-gray-400 flex items-center justify-center transition-all duration-500">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-          </svg>
-        </div>
-        <span class="mt-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Market</span>
-      </div>
-    </div>
-
-    <%# Progress Line Background %>
-    <div class="absolute top-5 left-10 right-10 h-[2px] bg-gray-200 -z-0"></div>
-    <%# Dynamic Filling Line %>
-    <div id="progress-bar" class="absolute top-5 left-10 h-[2px] bg-[#34A8DA] -z-0 transition-all duration-500 w-0"></div>
-  </div>
 
   <%# --- FORM CONTAINER --- %>
   <%= form_with(model: @product, local: true, class: "max-w-5xl mx-auto space-y-10 ") do |f| %>
@@ -253,134 +224,22 @@
 
             <%= link_to "Discard Draft", products_path, 
                 class: "text-[11px] font-black text-gray-400 hover:text-rose-500 uppercase tracking-[0.2em] transition-colors px-6" %>
-            <button type="button" onclick="changeStep(2)" class="w-auto px-6 py-5 bg-[#5D5899] hover:bg-[#4d4885] text-white font-black rounded-3xl shadow-xl shadow-indigo-200 transform hover:-translate-y-1 active:scale-95 transition-all uppercase tracking-[0.2em] text-xs cursor-pointer">Next Step</button>
-          
+            <%= f.submit "Submit",
+              class: "w-auto px-4 py-4 bg-[#5D5899] hover:bg-[#4d4885] text-white font-black rounded-2xl shadow-xs shadow-indigo-200 transform hover:-translate-y-1 active:scale-95 transition-all uppercase tracking-[0.2em] text-sm cursor-pointer"
+            %>          
         </div>
-        <%= f.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
 
         </div>
     </div>
- 
+
     
-   <%# PART 2:  %>
-    <div class="form-section p-8 md:p-12 space-y-8 hidden" id="section-2">
-      <div class="space-y-1">
-        <h2 class="text-xl font-bold text-gray-900">Market & Assets</h2>
-        <p class="text-sm text-gray-400">Finalize pricing and upload files.</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="space-y-2">
-          <%= f.label :price, class: "text-[10px] font-bold text-gray-400 uppercase tracking-widest" %>
-          <div class="flex items-center border-b-2 border-gray-100">
-            <span class="text-gray-300 text-xl font-bold mr-2">$</span>
-            <%= f.number_field :price, class: "w-full px-6 py-4 rounded-2xl border border-gray-100 outline-none text-xl font-bold bg-gray-100/50 focus:bg-white focus:ring-4 focus:ring-[#5D5899]/5 outline-none transition-all font-medium shadow-inner" %>
-          </div>
-        </div>
-        <div class="space-y-2">
-          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Master File</label>
-          <%= f.file_field :file, class: "text-xs font-bold text-gray-500 pt-3" %>
-        </div>
-          
-      </div>
-      
-      <div class="pt-8 space-y-6">
-        <label class="flex items-start space-x-3 cursor-pointer group">
-          <input type="checkbox" class="mt-1 w-5 h-5 rounded text-green-500 border-gray-300 focus:ring-0">
-          <span class="text-xs font-bold text-gray-500 group-hover:text-gray-900 uppercase tracking-wider leading-relaxed">I confirm ownership and agree to terms.</span>
-        </label>
-
-        
-      </div>
-      <div class="pt-8 space-y-6">
-
-        <label class="flex items-start space-x-3 cursor-pointer group">
-          <input type="checkbox" class="mt-1 w-5 h-5 rounded text-green-500 border-gray-300 focus:ring-0">
-          <span class="text-xs font-bold text-gray-500 group-hover:text-gray-900 uppercase tracking-wider leading-relaxed">I confirm ownership and agree to terms.</span>
-        </label>
-
-        <div class="flex justify-between items-center">
-          <button type="button" onclick="changeStep(1)" class="cursor-pointer text-xs font-bold text-gray-400 uppercase tracking-widest">Back</button>
-          <%# <%= f.submit "Publish Product", class: "px-10 py-5 bg-[#79C343] text-white rounded-xl font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-green-100 cursor-pointer hover:scale-105 transition-all" %> %>
-        </div>
-      </div>
-    </div>
-   <% end %>
+  <% end %>
 
    
 </div>
-<script>
-  function changeStep(step) {
-    // 1. Hide all sections
-    document.querySelectorAll('.form-section').forEach(section => section.classList.add('hidden'));
-    
-    // 2. Show target section
-    document.getElementById('section-' + step).classList.remove('hidden');
 
-    // 3. Update Progress Bar Line
-    const progressLine = document.getElementById('progress-bar');
-    if(step === 1) progressLine.style.width = '0%';
-    if(step === 2) progressLine.style.width = '90%';
 
-    // 4. Update Stepper Icons
-    document.querySelectorAll('.step-item').forEach((item, index) => {
-      const currentIdx = index + 1;
-      const circle = item.querySelector('.step-circle');
-      
-      if(currentIdx < step) { // Completed
-        item.style.opacity = '1';
-        circle.style.backgroundColor = '#79C343'; // Green
-        circle.style.borderColor = '#79C343';
-        circle.classList.remove('ring-4', 'ring-blue-50');
 
-      } else if(currentIdx === step) { // Active
-        item.style.opacity = '1';
-        circle.style.backgroundColor = '#34A8DA'; // Blue
-        circle.style.borderColor = '#34A8DA';
-        circle.classList.add('ring-4', 'ring-blue-50');
-        
-      } else { // Future
-        item.style.opacity = '0.4';
-        circle.style.backgroundColor = '#ffffff';
-        circle.style.borderColor = '#e5e7eb';
-        circle.classList.remove('ring-4', 'ring-blue-50');
-
-      }
-    });
-  }
-  document.addEventListener("DOMContentLoaded", () => {
-  const items = document.querySelectorAll("[data-checkbox]");
-
-  items.forEach((item) => {
-    const checkbox = item.querySelector(".release-checkbox");
-
-    const updateStyle = () => {
-      if (checkbox.checked) {
-        item.classList.add("bg-indigo-50");
-        item.classList.remove("bg-white");
-      } else {
-        item.classList.add("bg-white");
-        item.classList.remove("bg-indigo-50");
-      }
-    };
-
-    // initial state
-    updateStyle();
-
-    // on change
-    checkbox.addEventListener("change", updateStyle);
-  });
-});
-  function updateFileName(input) {
-    const label = document.getElementById('file-label');
-    if (input.files && input.files.length > 0) {
-      label.innerText = input.files.length > 1 
-        ? `${input.files.length} files selected` 
-        : input.files[0].name;
-      label.classList.add('text-green-600');
-    }
-  }
-</script>
 <style>
   /* Styling the 'Pills' inside the input (for Tom Select/Select2) */
   .ts-control .item {
@@ -412,5 +271,4 @@
     color: #4B5563;
   }
 </style>
-        <%# icon-step.style.color = "white "; %>
       

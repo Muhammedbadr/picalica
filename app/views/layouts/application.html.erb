@@ -22,6 +22,21 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <style>
+      * { font-family: 'Cairo', sans-serif; }
+      body { background: #f0f2f7; }
+    
+      .slide-in {
+        animation: slideIn 0.3s ease forwards;
+      }
+      
+    
+      /* Hide native file inputs */
+      input[type="file"] { display: none; }
+    
+      /* Auto-resize textarea */
+      textarea { resize: none; overflow: hidden; }
+    </style>
   </head>
 
   <body class="bg-[#F1F3F4]">

@@ -6,7 +6,6 @@ class ProductsController < ApplicationController
   
   def index
     @products = Product.all
-    
   end
 
   # GET /products/1 or /products/1.json
@@ -31,15 +30,29 @@ class ProductsController < ApplicationController
   # POST /products or /products.json
   def create
     @product = current_user.products.build(product_params)
-    
 
     if @product.save
-      redirect_to @product, notice: "Product was successfully created."
+      # خطأ: لا يمكنك وضع 2 redirect_to خلف بعضهما
+      # سنبقي فقط الانتقال للخطوة الثانية
+      redirect_to step_two_product_path(@product), notice: "Basic data has been saved, please complete the images and files"
     else
-      puts @product.errors.full_messages
       render :new, status: :unprocessable_entity
     end
   end
+
+  def step_two
+    # تعرض صفحة الصور والملفات (التي أنشأناها يدوياً)
+    # @product.images.build if @product.images.empty?
+    @product = Product.find(params[:id])
+  end
+
+  def update_step_two
+    if @product.update(product_step_two_params)
+      redirect_to @product, notice: "Product was successfully updated."
+    else
+      render :step_two, status: :unprocessable_entity
+    end
+  end 
 
   # PATCH/PUT /products/1 or /products/1.json
   def update
@@ -88,6 +101,13 @@ class ProductsController < ApplicationController
     )
     end
     
+    def product_step_two_params
+      params.require(:product).permit(
+        :image, 
+        :video_url, 
+        images_attributes: [:id, :title, :_destroy, images: []],
+      )
+    end
 
     def authorize_owner!
       unless @product.user == current_user

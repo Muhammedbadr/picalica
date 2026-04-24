@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
  
-  resources :users
  
   resources :products do
+    
     resources :texts
     resources :lists do
       resources :list_tags
@@ -13,7 +13,10 @@ Rails.application.routes.draw do
     resources :payments
     resources :licenses
     resources :tags, only: [:index, :create, :destroy]
-
+    member do
+      get :step_two           # لعرض صفحة الصور والملفات
+      patch :update_step_two    # لحفظ بيانات الصفحة الثانية
+    end
   end
   # resources :users do 
   #   resources :profiles
@@ -23,6 +26,7 @@ Rails.application.routes.draw do
         # sessions: 'users/sessions'
     }
 
+  resources :users
   
    root to: "home#index"
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

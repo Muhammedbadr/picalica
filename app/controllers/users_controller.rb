@@ -1,10 +1,10 @@
 class UsersController < ApplicationController
   # 1. أزلنا الـ :index من هنا لأن صفحة الكل لا تحتاج ID
   before_action :set_user, only: [:show, :edit, :update]
-
-  def index
-    @users = User.all
-  end
+  
+  # def index
+  #   @users = User.all
+  # end
 
   def show
     # @user معرفة تلقائياً بفضل الـ before_action
