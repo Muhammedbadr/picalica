@@ -69,4 +69,4 @@ end
 
 gem "devise", "~> 5.0" 
 
-gem "stripe", "~> 19.0"
+gem "stripe", "~> 19.1"
