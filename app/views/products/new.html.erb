@@ -239,7 +239,52 @@
 </div>
 
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Checkbox styling
+    document.querySelectorAll("[data-checkbox]").forEach((item) => {
+      const checkbox = item.querySelector(".release-checkbox");
+      const updateStyle = () => {
+        if (checkbox.checked) {
+          item.classList.add("bg-indigo-50");
+          item.classList.remove("bg-white");
+        } else {
+          item.classList.add("bg-white");
+          item.classList.remove("bg-indigo-50");
+        }
+      };
+      updateStyle();
+      checkbox.addEventListener("change", updateStyle);
+    });
 
+    // Hero image preview
+    const heroInput = document.getElementById('hero-input');
+    if (heroInput) {
+      heroInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+          const img = document.getElementById('hero-preview');
+          img.src = ev.target.result;
+          img.classList.remove('hidden');
+          document.getElementById('hero-placeholder').classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  });
+  // احذف هذه الدالة تماماً
+  function updateFileName(input) {
+    const label = document.getElementById('file-label');
+    if (input.files && input.files.length > 0) {
+      label.innerText = input.files.length > 1 
+        ? `${input.files.length} files selected` 
+        : input.files[0].name;
+      label.classList.add('text-green-600');
+    }
+  }
+</script>
 <style>
   /* Styling the 'Pills' inside the input (for Tom Select/Select2) */
   .ts-control .item {

@@ -18,21 +18,33 @@
 
         <%# input show main image for product  %>
         <div class="space-y-3">
-          <span class="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Main Product Cover</span>
-          <div id="hero-zone"
-              onclick="document.getElementById('hero-input').click()"
-              class="relative h-96 bg-gray-50 rounded-[2rem] border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 hover:bg-white hover:border-[#5D5899] overflow-hidden group">
+            <span class="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Main Product Cover</span>
             
+            <%# الحاوية الرئيسية %>
+            <div class="relative h-96 bg-gray-50 rounded-[2rem] border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 hover:bg-white hover:border-[#5D5899] overflow-hidden group"
+              onclick="document.getElementById('hero-input').click()">
+            
+            <%# المعاينة (تظهر فقط عند اختيار صورة) %>
             <img id="hero-preview" class="absolute inset-0 w-full h-full object-cover hidden">
-            <input type="file" id="hero-input" accept="image/*" class="">
-            
-            <div id="hero-placeholder" class="flex flex-col items-center gap-4">
+
+            <%# حقل رفع الملفات الخاص بـ Rails %>
+            <%= f.file_field :picture, 
+                  id: "hero-input", 
+                  accept: "image/*", 
+                  class: "hidden", 
+                  onchange: "previewHeroImage(this)" %>
+
+            <%# العناصر التي تختفي عند المعاينة %>
+            <div id="hero-placeholder" class="flex flex-col items-center gap-4 text-center">
               <div class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center transition-transform duration-300 group-hover:-translate-y-2">
                 <svg class="w-8 h-8 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19.35 10.04A7.49 7.49 0 0012 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 000 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
                 </svg>
               </div>
-              <span class="text-[11px] font-black text-gray-400 uppercase tracking-widest">Upload Product Image</span>
+              <div class="space-y-1">
+                <span class="block text-[11px] font-black text-gray-400 uppercase tracking-widest">Upload Product Image</span>
+                <p class="text-[10px] text-gray-400">PNG, JPG up to 10MB</p>
+              </div>
             </div>
           </div>
         </div>
@@ -117,35 +129,38 @@
             <div class="flex-1 p-8 text-left space-y-4">
               <span class="inline-block text-[9px] font-black px-4 py-1 rounded-full bg-blue-100 text-blue-600 tracking-widest uppercase">Image Gallery</span>
               <%# <input type="text"  class="block-heading w-full bg-transparent border-none outline-none text-xl font-black text-gray-900 placeholder-gray-300"> %>
-              <input type="text" placeholder="Add title" value="Images" class="block-heading w-full bg-transparent border-none outline-none text-xl font-black text-gray-900 placeholder-gray-300  mb-4">
-
+              <%= f.text_field :title, 
+                placeholder: "Add title", 
+                placeholder: "Add title",
+                    class: "block-heading w-full bg-transparent border-none outline-none text-xl
+                           font-black text-gray-900 placeholder-gray-300 mb-4" %>
               <div id="grid-${uid}" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
               </div>
-
+                <%# <%= f.file_field :images, multiple: true , style: " display: block" %> %>
+                    <%= f.fields_for :images do |image_form| %>
+                      <%= image_form.file_field :images, multiple: true ,  style: " display: block"%>
+                    <% end %>
               <div class="mt-4">
-                <div class="relative size-32 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-white transition-all group" 
+                <%# <div class="relative size-32 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-white transition-all group" 
                     onclick="document.getElementById('${uid}').click()">
-                  <input  type="file" 
-                        id="${uid}" 
+                  <%= f.text_field :images id="${uid}" 
                         name="product[product_images_attributes][][images][]" 
                         multiple 
                         accept="image/*" 
                         class="hidden" 
-                        onchange="handleMultipleImages(this, 'grid-${uid}')">
-                  
+                        onchange="handleMultipleImages(this, 'grid-${uid}')"
                   <div type="button" class="flex flex-col items-center gap-2 text-gray-400 group-hover:text-blue-500">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
                     <span class="text-[10px] font-black uppercase" >Add Images</span>
                   </div>
-                </div>
+                </div> %>
               </div>
             </div>
           </div>
-
         </div>
-
+        
         <%# Add more Feature %>
         <div class="bg-gray-100/60 rounded-[2.5rem] p-8 space-y-6">
           <span class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] text-center">Add New Section</span>
@@ -199,6 +214,7 @@
 
 
 <script>
+  // User picks imagesShows preview thumbnails
   function handleMultipleImages(input, gridId) {
     const grid = document.getElementById(gridId);
     
@@ -231,25 +247,8 @@
     }
   }
 
-  // 2. Interactive UI Elements
   document.addEventListener("DOMContentLoaded", () => {
-    // Checkbox styling
-    document.querySelectorAll("[data-checkbox]").forEach((item) => {
-      const checkbox = item.querySelector(".release-checkbox");
-      const updateStyle = () => {
-        if (checkbox.checked) {
-          item.classList.add("bg-indigo-50");
-          item.classList.remove("bg-white");
-        } else {
-          item.classList.add("bg-white");
-          item.classList.remove("bg-indigo-50");
-        }
-      };
-      updateStyle();
-      checkbox.addEventListener("change", updateStyle);
-    });
-
-    // Hero image preview
+    // كود معاينة صورة الغلاف فقط (لأن كود الـ checkbox غير موجود عندك)
     const heroInput = document.getElementById('hero-input');
     if (heroInput) {
       heroInput.addEventListener('change', function(e) {
@@ -266,18 +265,7 @@
       });
     }
   });
-
-  function updateFileName(input) {
-    const label = document.getElementById('file-label');
-    if (input.files && input.files.length > 0) {
-      label.innerText = input.files.length > 1 
-        ? `${input.files.length} files selected` 
-        : input.files[0].name;
-      label.classList.add('text-green-600');
-    }
-  }
-
-  // 3. Block Builder Core Logic
+  //Click TEXT/LIST/IMAGE/VIDEOCreates new content block
   function addBlock(type) {
     const container = document.getElementById('blocks-container');
     const div = document.createElement('div');
@@ -351,12 +339,14 @@
     container.appendChild(div);
   }
 
+  // Click × on a blockFades out and deletes block
   function removeBlock(btn) {
     const block = btn.closest('.block-item');
     block.style.opacity = '0';
     setTimeout(() => block.remove(), 250);
   }
 
+  // Click ↑ or ↓Moves block up or down
   function moveBlock(btn, dir) {
     const block = btn.closest('.block-item');
     const container = document.getElementById('blocks-container');
@@ -369,6 +359,7 @@
     }
   }
 
+  // Click "Add List Item"Adds new feature row
   function addFeature(btn) {
     const list = btn.previousElementSibling;
     const item = document.createElement('div');
@@ -382,18 +373,26 @@
     list.appendChild(item);
   }
 
-  function previewBlockImg(input) {
-    const zone = input.closest('.img-zone');
-    const img = zone.querySelector('.img-preview');
+  function previewHeroImage(input) {
+  const preview = document.getElementById('hero-preview');
+  const placeholder = document.getElementById('hero-placeholder');
+  
+  if (input.files && input.files[0]) {
     const reader = new FileReader();
-    reader.onload = e => {
-      img.src = e.target.result;
-      img.classList.remove('hidden');
-      zone.querySelectorAll('span, div').forEach(el => el.style.display = 'none');
-    };
+    
+    reader.onload = function(e) {
+      // 1. وضع الصورة في الـ Preview
+      preview.src = e.target.result;
+      
+      // 2. إظهار الصورة وإخفاء العناصر التوضيحية
+      preview.classList.remove('hidden');
+      placeholder.classList.add('hidden');
+    }
+    
     reader.readAsDataURL(input.files[0]);
   }
-
+}
+// Typing in textareaMakes textarea grow/shrink
   function autoResize(el) {
     el.style.height = 'auto';
     el.style.height = el.scrollHeight + 'px';

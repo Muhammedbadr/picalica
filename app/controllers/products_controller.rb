@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!
   # before_action :require_seller, only: [:new, :create]
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  # before_action :set_product, only: [:show, :edit, :update, :destroy , :update_step_two]
   before_action :authorize_owner!, only: [:edit, :update, :destroy]
   
   def index
@@ -47,10 +47,11 @@ class ProductsController < ApplicationController
   end
 
   def update_step_two
+    @product = Product.find(params[:id])
     if @product.update(product_step_two_params)
       redirect_to @product, notice: "Product was successfully updated."
     else
-      render :show , status: :unprocessable_entity
+      render :step_two , status: :unprocessable_entity
     end
   end 
 
@@ -76,7 +77,7 @@ class ProductsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+ 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
@@ -96,15 +97,13 @@ class ProductsController < ApplicationController
         :issue_number,
         :subcategory_id,
         licenses_attributes: [:id, :price, :title_name, :_destroy],
+                # images_attributes: [:id, :title , :_destroy  , images: [] ],
         product_files_attributes: [:id, :attachment, :_destroy]   
     )
     end
     
     def product_step_two_params
-      params.require(:product).permit(
-        # :image, 
-        :video_url, 
-        images_attributes: [:id, :title , :_destroy  , images: [] ],
+      params.require(:product).permit( :picture , images: [] 
 
       )
     end
