@@ -50,7 +50,7 @@ class ProductsController < ApplicationController
     if @product.update(product_step_two_params)
       redirect_to @product, notice: "Product was successfully updated."
     else
-      render :step_two, status: :unprocessable_entity
+      render :show , status: :unprocessable_entity
     end
   end 
 
@@ -96,16 +96,16 @@ class ProductsController < ApplicationController
         :issue_number,
         :subcategory_id,
         licenses_attributes: [:id, :price, :title_name, :_destroy],
-        images_attributes: [:id, :title , :_destroy  , images: [] ],
         product_files_attributes: [:id, :attachment, :_destroy]   
     )
     end
     
     def product_step_two_params
       params.require(:product).permit(
-        :image, 
+        # :image, 
         :video_url, 
-        images_attributes: [:id, :title, :_destroy, images: []],
+        images_attributes: [:id, :title , :_destroy  , images: [] ],
+
       )
     end
 
