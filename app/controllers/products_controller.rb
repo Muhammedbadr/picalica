@@ -103,8 +103,14 @@ class ProductsController < ApplicationController
     end
     
     def product_step_two_params
-      params.require(:product).permit( :picture , images: [] 
-
+      params.require(:product).permit(
+        images_attributes: [
+          :id,
+          :title,
+          :_destroy,
+          :image,        # has_one_attached :image  (single photo per block)
+          pictures: []   # has_many_attached :pictures (multiple photos per block)
+        ]
       )
     end
 

@@ -1,5 +1,4 @@
-<%= form_with(model: @product, url: update_step_two_product_path(@product),class: "max-w-5xl mx-auto space-y-10 " , method: :patch) do |f| %>
-  <div>
+<%= form_with(model: @product, url: update_step_two_product_path(@product), local: true, multipart: true, class: "max-w-5xl mx-auto space-y-10 ", method: :patch) do |f| %>
     <div class="form-section form-2  p-8 md:p-12 space-y-8" id="section-2">
       <div class="bg-white rounded-[2rem] mt-6 border border-gray-100 shadow-sm space-y-8 p-10">
         
@@ -18,23 +17,21 @@
 
         <%# input show main image for product  %>
         <div class="space-y-3">
-            <span class="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Main Product Cover</span>
-            
-            <%# الحاوية الرئيسية %>
-            <div class="relative h-96 bg-gray-50 rounded-[2rem] border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 hover:bg-white hover:border-[#5D5899] overflow-hidden group"
+          <span class="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Main Product Cover</span>
+
+          <div class="relative h-96 bg-gray-50 rounded-[2rem] border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 hover:bg-white hover:border-[#5D5899] overflow-hidden group"
               onclick="document.getElementById('hero-input').click()">
-            
-            <%# المعاينة (تظهر فقط عند اختيار صورة) %>
+
             <img id="hero-preview" class="absolute inset-0 w-full h-full object-cover hidden">
 
-            <%# حقل رفع الملفات الخاص بـ Rails %>
-            <%= f.file_field :picture, 
-                  id: "hero-input", 
-                  accept: "image/*", 
-                  class: "hidden", 
-                  onchange: "previewHeroImage(this)" %>
+            <%# correct name — goes to Image model index 0, field :image %>
+            <input type="file"
+                  id="hero-input"
+                  name="product[images_attributes][0][image]"
+                  accept="image/*"
+                  class="hidden"
+                  onchange="previewHeroImage(this)">
 
-            <%# العناصر التي تختفي عند المعاينة %>
             <div id="hero-placeholder" class="flex flex-col items-center gap-4 text-center">
               <div class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center transition-transform duration-300 group-hover:-translate-y-2">
                 <svg class="w-8 h-8 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
@@ -85,7 +82,7 @@
 
           </div>
           <%# List block   %>
-          <div class="block-item slide-in bg-gray-50/70 rounded-[2rem] border border-gray-100 overflow-hidden flex transition-shadow duration-200 hover:shadow-md" data-type="text">
+          <div class="block-item slide-in bg-gray-50/70 rounded-[2rem] border border-gray-100 overflow-hidden flex transition-shadow duration-200 hover:shadow-md" data-type="list">
             
             <div class="flex flex-col items-center justify-center gap-2 px-4 py-6 bg-gray-100/60 border-r border-gray-100 min-w-[65px] self-start sticky top-0">
               <button type="button" onclick="moveBlock(this,-1)" class="cursor-pointer w-8 h-8 rounded-xl bg-white shadow-sm flex items-center justify-center text-gray-400 hover:text-[#5D5899] transition-all hover:shadow-md">
@@ -111,8 +108,9 @@
             </div>
           </div>
           <%# Image block   %>
-          <div class="block-item slide-in bg-gray-50/70 rounded-[2rem] border border-gray-100 overflow-hidden flex transition-shadow duration-200 hover:shadow-md" data-type="text">
-            <div class="flex flex-col items-center justify-center gap-2 px-4 py-6 bg-gray-100/60 border-r border-gray-100 min-w-[65px] self-start sticky top-0">
+          <div class="block-item slide-in bg-gray-50/70 rounded-[2rem] border border-gray-100 overflow-hidden flex transition-shadow duration-200 hover:shadow-md" data-type="image">
+          
+          <div class="flex flex-col items-center justify-center gap-2 px-4 py-6 bg-gray-100/60 border-r border-gray-100 min-w-[65px] self-start sticky top-0">
               <button type="button" onclick="moveBlock(this,-1)" class="cursor-pointer w-8 h-8 rounded-xl bg-white shadow-sm flex items-center justify-center text-gray-400 hover:text-[#5D5899] transition-all hover:shadow-md">
                   <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"/></svg>
               </button>
@@ -124,41 +122,46 @@
               <div class="w-6 h-px bg-gray-200 my-1"></div>
               
               <button type="button" onclick="removeBlock(this)" class="cursor-pointer w-8 h-8 rounded-xl bg-white shadow-sm flex items-center justify-center text-red-300 hover:text-red-500 hover:bg-red-50 transition-all text-xl font-bold hover:shadow-md">×</button>
-            </div>
+          </div>
           
-            <div class="flex-1 p-8 text-left space-y-4">
+          <div class="flex-1 p-8 text-left space-y-4">
               <span class="inline-block text-[9px] font-black px-4 py-1 rounded-full bg-blue-100 text-blue-600 tracking-widest uppercase">Image Gallery</span>
-              <%# <input type="text"  class="block-heading w-full bg-transparent border-none outline-none text-xl font-black text-gray-900 placeholder-gray-300"> %>
-              <%= f.text_field :title, 
-                placeholder: "Add title", 
-                placeholder: "Add title",
-                    class: "block-heading w-full bg-transparent border-none outline-none text-xl
-                           font-black text-gray-900 placeholder-gray-300 mb-4" %>
-              <div id="grid-${uid}" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+
+              <%# title saved to images.title column %>
+              <input type="text"
+                    name="product[images_attributes][0][title]"
+                    placeholder="Add title"
+                    value="Gallery Images "
+                    class="block-heading w-full bg-transparent border-none outline-none text-xl font-black text-gray-900 placeholder-gray-300 mb-4">
+
+              <%# grid for previews %>
+              <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
               </div>
-                <%# <%= f.file_field :images, multiple: true , style: " display: block" %> %>
-                    <%= f.fields_for :images do |image_form| %>
-                      <%= image_form.file_field :images, multiple: true ,  style: " display: block"%>
-                    <% end %>
+
               <div class="mt-4">
-                <%# <div class="relative size-32 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-white transition-all group" 
-                    onclick="document.getElementById('${uid}').click()">
-                  <%= f.text_field :images id="${uid}" 
-                        name="product[product_images_attributes][][images][]" 
-                        multiple 
-                        accept="image/*" 
-                        class="hidden" 
-                        onchange="handleMultipleImages(this, 'grid-${uid}')"
-                  <div type="button" class="flex flex-col items-center gap-2 text-gray-400 group-hover:text-blue-500">
+                <div class="relative size-32 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-white transition-all group"
+                    onclick="document.getElementById('gallery-input').click()">
+
+                  <%# pictures → has_many_attached :pictures on Image model %>
+                  <input type="file"
+                        id="gallery-input"
+                        name="product[images_attributes][0][pictures][]"
+                        multiple
+                        accept="image/*"
+                        class="hidden"
+                        onchange="handleMultipleImages(this, 'gallery-grid')">
+
+                  <div class="flex flex-col items-center gap-2 text-gray-400 group-hover:text-blue-500">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
-                    <span class="text-[10px] font-black uppercase" >Add Images</span>
+                    <span class="text-[10px] font-black uppercase">Add Images</span>
                   </div>
-                </div> %>
+                </div>
               </div>
             </div>
           </div>
+        
         </div>
         
         <%# Add more Feature %>
@@ -209,7 +212,6 @@
 
       </div>
     </div>
-  </div>
 <% end %>
 
 
@@ -247,31 +249,14 @@
     }
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    // كود معاينة صورة الغلاف فقط (لأن كود الـ checkbox غير موجود عندك)
-    const heroInput = document.getElementById('hero-input');
-    if (heroInput) {
-      heroInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = ev => {
-          const img = document.getElementById('hero-preview');
-          img.src = ev.target.result;
-          img.classList.remove('hidden');
-          document.getElementById('hero-placeholder').classList.add('hidden');
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-  });
+ 
   //Click TEXT/LIST/IMAGE/VIDEOCreates new content block
   function addBlock(type) {
     const container = document.getElementById('blocks-container');
     const div = document.createElement('div');
     div.className = 'block-item slide-in bg-gray-50/70 rounded-[2rem] border border-gray-100 overflow-hidden flex transition-shadow duration-200 hover:shadow-md';
     div.dataset.type = type;
-    const uid = 'f' + Date.now();
+    const uid = 'block_' + Date.now();
 
     const controls = `
       <div class="flex flex-col items-center justify-center gap-2 px-4 py-6 bg-gray-100/60 border-r border-gray-100 min-w-[50px]">
@@ -303,23 +288,28 @@
       bodyHTML = `
         <div class="flex-1 p-8 text-left space-y-4">
           <span class="inline-block text-[9px] font-black px-4 py-1 rounded-full bg-blue-100 text-blue-600 tracking-widest uppercase">Image Gallery</span>
-          <input type="text" placeholder="Gallery Title" class="block-heading w-full bg-transparent border-none outline-none text-xl font-black text-gray-900 placeholder-gray-300 mb-4">
-          
+
+          <input type="text"
+                name="product[images_attributes][${uid}][title]"
+                placeholder="Gallery Title"
+                class="block-heading w-full bg-transparent border-none outline-none text-xl font-black text-gray-900 placeholder-gray-300 mb-4">
+
           <div id="grid-${uid}" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            </div>
+          </div>
 
           <div class="mt-4">
-            <div class="relative size-32 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-white transition-all group" 
-                onclick="document.getElementById('${uid}').click()">
-              <input type="file" 
-                    id="${uid}" 
-                    name="product[product_images_attributes][][images][]" 
-                    multiple 
-                    accept="image/*" 
-                    class="hidden" 
+            <div class="relative size-32 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-white transition-all group"
+                onclick="document.getElementById('input-${uid}').click()">
+
+              <input type="file"
+                    id="input-${uid}"
+                    name="product[images_attributes][${uid}][pictures][]"
+                    multiple
+                    accept="image/*"
+                    class="hidden"
                     onchange="handleMultipleImages(this, 'grid-${uid}')">
-              
-              <div  class="flex flex-col items-center gap-2 text-gray-400 group-hover:text-blue-500">
+
+              <div class="flex flex-col items-center gap-2 text-gray-400 group-hover:text-blue-500">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
@@ -338,60 +328,77 @@
     div.innerHTML = controls + bodyHTML;
     container.appendChild(div);
   }
-
-  // Click × on a blockFades out and deletes block
-  function removeBlock(btn) {
-    const block = btn.closest('.block-item');
-    block.style.opacity = '0';
-    setTimeout(() => block.remove(), 250);
-  }
-
-  // Click ↑ or ↓Moves block up or down
-  function moveBlock(btn, dir) {
-    const block = btn.closest('.block-item');
-    const container = document.getElementById('blocks-container');
-    const items = [...container.querySelectorAll('.block-item')];
-    const idx = items.indexOf(block);
-    const target = idx + dir;
-    if (target >= 0 && target < items.length) {
-      if (dir === -1) container.insertBefore(block, items[target]);
-      else container.insertBefore(items[target], block);
+  document.addEventListener("DOMContentLoaded", () => {
+      // كود معاينة صورة الغلاف فقط (لأن كود الـ checkbox غير موجود عندك)
+      const heroInput = document.getElementById('hero-input');
+      if (heroInput) {
+        heroInput.addEventListener('change', function(e) {
+          const file = e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = ev => {
+            const img = document.getElementById('hero-preview');
+            img.src = ev.target.result;
+            img.classList.remove('hidden');
+            document.getElementById('hero-placeholder').classList.add('hidden');
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+    });
+    // Click × on a blockFades out and deletes block
+    function removeBlock(btn) {
+      const block = btn.closest('.block-item');
+      block.style.opacity = '0';
+      setTimeout(() => block.remove(), 250);
     }
-  }
 
-  // Click "Add List Item"Adds new feature row
-  function addFeature(btn) {
-    const list = btn.previousElementSibling;
-    const item = document.createElement('div');
-    item.className = 'feature-item flex items-start gap-4 border-l-[4px] border-[#5D5899] pl-6 py-1 slide-in';
-    item.innerHTML = `
-      <div class="flex-1">
-        <input type="text" placeholder="Feature Title" class="w-full bg-transparent border-none outline-none text-lg text-base font-black text-gray-900 block mb-1">
-        <textarea placeholder="Description..." class="w-full bg-transparent border-none outline-none text-base font-semibold text-gray-400 min-h-[28px]" oninput="autoResize(this)"></textarea>
-      </div>
-      <button onclick="this.parentElement.remove()" class="cursor-pointer text-gray-300 hover:text-red-500 text-xl font-bold">×</button>`;
-    list.appendChild(item);
-  }
+    // Click ↑ or ↓Moves block up or down
+    function moveBlock(btn, dir) {
+      const block = btn.closest('.block-item');
+      const container = document.getElementById('blocks-container');
+      const items = [...container.querySelectorAll('.block-item')];
+      const idx = items.indexOf(block);
+      const target = idx + dir;
+      if (target >= 0 && target < items.length) {
+        if (dir === -1) container.insertBefore(block, items[target]);
+        else container.insertBefore(items[target], block);
+      }
+    }
 
-  function previewHeroImage(input) {
-  const preview = document.getElementById('hero-preview');
-  const placeholder = document.getElementById('hero-placeholder');
-  
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
+    // Click "Add List Item"Adds new feature row
+    function addFeature(btn) {
+      const list = btn.previousElementSibling;
+      const item = document.createElement('div');
+      item.className = 'feature-item flex items-start gap-4 border-l-[4px] border-[#5D5899] pl-6 py-1 slide-in';
+      item.innerHTML = `
+        <div class="flex-1">
+          <input type="text" placeholder="Feature Title" class="w-full bg-transparent border-none outline-none text-lg text-base font-black text-gray-900 block mb-1">
+          <textarea placeholder="Description..." class="w-full bg-transparent border-none outline-none text-base font-semibold text-gray-400 min-h-[28px]" oninput="autoResize(this)"></textarea>
+        </div>
+        <button onclick="this.parentElement.remove()" class="cursor-pointer text-gray-300 hover:text-red-500 text-xl font-bold">×</button>`;
+      list.appendChild(item);
+    }
+
+    function previewHeroImage(input) {
+    const preview = document.getElementById('hero-preview');
+    const placeholder = document.getElementById('hero-placeholder');
     
-    reader.onload = function(e) {
-      // 1. وضع الصورة في الـ Preview
-      preview.src = e.target.result;
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
       
-      // 2. إظهار الصورة وإخفاء العناصر التوضيحية
-      preview.classList.remove('hidden');
-      placeholder.classList.add('hidden');
+      reader.onload = function(e) {
+        // 1. وضع الصورة في الـ Preview
+        preview.src = e.target.result;
+        
+        // 2. إظهار الصورة وإخفاء العناصر التوضيحية
+        preview.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+      }
+      
+      reader.readAsDataURL(input.files[0]);
     }
-    
-    reader.readAsDataURL(input.files[0]);
   }
-}
 // Typing in textareaMakes textarea grow/shrink
   function autoResize(el) {
     el.style.height = 'auto';
@@ -399,3 +406,13 @@
   }
 
 </script>
+<%# <%= f.file_field :images, multiple: true, accept: "image/*", id: "gallery-images-input", class: "hidden", onchange: "handleMultipleImages(this, 'gallery-grid')" %> %>
+                  <%# <div class="relative size-32 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-white transition-all group" onclick="document.getElementById('gallery-images-input').click()">
+                    <div class="flex flex-col items-center gap-2 text-gray-400 group-hover:text-blue-500">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                      </svg>
+                      <span class="text-[10px] font-black uppercase">Add Images</span>
+                    </div>
+                  </div>
+                </div> %>

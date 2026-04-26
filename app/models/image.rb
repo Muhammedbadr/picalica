@@ -1,5 +1,5 @@
 class Image < ApplicationRecord
   belongs_to :product
-  # has_many_attached :images
-  # has_one_attached :cover_image
+  has_many_attached :pictures, dependent: :destroy
+  has_one_attached :image, dependent: :destroy
 end
