@@ -1,5 +1,16 @@
 class Product < ApplicationRecord
   # before_action :authenticate_user!
+  # validates :title, presence: true
+  validates :description, presence: true
+  validates_associated :licenses
+  validates :title, presence: true 
+    
+    # 2. This ensures that IF there is a title, it starts with a capital letter
+  validates :title, format: { 
+    with: /\A[A-Z]/, 
+    message: "must start with a capital letter" 
+  }, if: -> { title.present? } # Only check format if title is there
+
 
   belongs_to :user
   belongs_to :subcategory , optional: true 
@@ -24,13 +35,15 @@ class Product < ApplicationRecord
   
   accepts_nested_attributes_for :licenses, allow_destroy: true
   accepts_nested_attributes_for :product_files, allow_destroy: true, reject_if: :all_blank
-# app/models/product.rb
-  # validates :product_files, length: { 
-  #     minimum: 1, 
-  #     maximum: 5, 
-  #     message: "must have between 1 and 5 files" 
-  #   }
-  # validates :preview_url, 
-  #   format: { with: URI::DEFAULT_PARSER.make_regexp,
-  #   message: "must be a valid URL" }, allow_blank: true
+
+  accepts_nested_attributes_for :texts,  allow_destroy: true
+  accepts_nested_attributes_for :lists,  allow_destroy: true, reject_if: :all_blank
+  accepts_nested_attributes_for :videos, allow_destroy: true
+
+
+  def thumbnail
+    return images.image.variant(resize: [300, 300]).processed
+  end
+ 
+ 
 end

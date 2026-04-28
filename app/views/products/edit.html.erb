@@ -1,10 +1,32 @@
-<% content_for :title, "Editing product" %>
+<%# app/views/products/edit.html.erb %>
+<% content_for :title, "Editing Product - Step #{@step}" %>
 
-<div class="md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">Editing product</h1>
+  
+  <div class="max-w-3xl mx-auto text-center mb-2 pt-12">
+    <h1 class="text-4xl font-bold tracking-tight" style="color: #5D5899;">
+      Editing: <%= @step == "1" ? "General Information" : "Product Assets" %>
+    </h1>
+    <p class="text-gray-500 mt-2 text-sm">Update your product details in two simple steps</p>
+  </div>
+    <% if @step == "1" %>
+      <%# This renders your new.html.erb code %>
+      <%= render template: "products/new" %>
+    <% else %>
+      <%# This renders your step_two.html.erb code %>
+      <%= render template: "products/step_two" %>
+    <% end %>
 
-  <%= render "form", product: @product %>
+  <div class="mt-8 flex gap-4">
+    <%= link_to "Cancel", products_path, class: "text-gray-400 font-bold uppercase text-xs" %>
+  </div>
 
-  <%= link_to "Show this product", @product, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to products", products_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-</div>
+
+
+
+
+
+
+
+
+
+

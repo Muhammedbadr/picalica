@@ -9,7 +9,7 @@
     <link rel="icon" href="/icon.png" type="image/png">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    
     <%= yield :head %>
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
@@ -43,7 +43,7 @@
     <header>
       <%= render 'layouts/header' %>
     </header>
-    <main >
+    <main>
         <%= render 'layouts/alert' %>
     </main>
      <%= yield %>
