@@ -1,24 +1,17 @@
 <div id="<%= dom_id product %>" class="w-full sm:w-auto my-5 space-y-5 p-6 bg-white shadow rounded-lg">
   
-  <% product.images.each_with_index do |image, i| %>
-  <div style="border: 1px solid red; padding: 10px; margin: 10px">
     
-    <p>Block <%= i + 1 %></p>
-    <p>Title: <%= image.title %></p>
+    <p> <%= product.images.title %></p>
     <%# correct way to check then show %>
-    <% if image.image.attached? %>
-      <%= image_tag image.image, width: 100 %>
-    <% else %>
-      <p>No image uploaded</p>
+    <% if product.images.attached? %>
+      <%= image_tag product.images.image, width: 100 %>
     <% end %>    
-    <p>Pictures count: <%= image.pictures.count %></p>
+    <p> <%= product.images.pictures.count %></p>
 
-    <% image.pictures.each do |pic| %>
+    <% product.images.pictures.each do |pic| %>
       <%= image_tag pic, width: 100 %>
     <% end %>
 
-  </div>
-<% end %>
 
   <div >
     <strong class="block font-medium mb-1">Title:</strong>
@@ -35,13 +28,7 @@
       </p>
     <% end %>
   <% end %>
-  <%# <p>Size: <%= number_to_human_size(@product_file.attachment) %>
-
-  <%# Using 'heading' from your schema as a subtitle %>
-  <%# <div>
-    <strong class="block font-medium mb-1">Heading:</strong>
-    <%= product.heading %>
-  <%# </div> %>
+ 
   <div>
     <strong class="block font-medium mb-1">exclusive_product:</strong>
     <%= product.exclusive_product %>
@@ -77,7 +64,7 @@
   <%# Displaying the User's email instead of just a boring ID number %>
   <div>
     <strong class="block font-medium mb-1">Posted By:</strong>
-    <%= product.user.email %> 
+    <%= product.user.name %> 
   </div>
 
   <%# Checking if it is an exclusive product %>
