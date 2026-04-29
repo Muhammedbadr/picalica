@@ -1,4 +1,217 @@
-<div>
-  <h1 class="font-bold text-4xl">Users#show</h1>
-  <p>Find me in app/views/users/show.html.erb</p>
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-10 px-4">
+  <div class="max-w-4xl mx-auto space-y-4">
+
+    <%# ── MAIN PROFILE CARD ── %>
+    <div class="bg-white rounded-3xl border border-gray-200 shadow-xl overflow-hidden">
+
+      <%# Enhanced Cover with Pattern %>
+      <div class="h-40 bg-gradient-to-br from-[#5D5899] via-[#6B63A8] to-indigo-500 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10"
+             style="background-image: radial-gradient(circle at 20% 50%, white 2px, transparent 2px), radial-gradient(circle at 80% 20%, white 2px, transparent 2px); background-size: 40px 40px;">
+        </div>
+        <%# Floating decorative circles %>
+        <div class="absolute top-4 right-8 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+        <div class="absolute -bottom-8 left-12 w-40 h-40 bg-indigo-300/10 rounded-full blur-3xl"></div>
+      </div>
+
+      <div class="px-8 pb-8">
+        <%# Avatar & Edit Button Row %> 
+        <div class="flex items-end justify-between -mt-16 mb-6">
+          <%# Avatar with Upload %>
+          <div class="relative group">
+            <div class="group w-32 h-32 rounded-3xl border-4 border-white shadow-2xl overflow-hidden bg-gradient-to-tr from-indigo-400 to-purple-400 flex items-center justify-center text-white text-4xl font-black relative">
+  
+              <%# 1. The actual image or initial %>
+              <% if @user.avatar.attached? %>
+                <%= image_tag @user.avatar, class: "w-full h-full object-cover" %>
+              <% else %>
+                <div class="pointer-events-none">
+                  <%= @user.name&.first&.upcase || @user.email[0].upcase %>
+                </div>
+              <% end %>
+
+              <%# 2. Hidden Form (Needs to be present to handle the upload) %>
+              <%= form_with(model: @user, local: true, class: "hidden") do |f| %>
+                <%= f.file_field :avatar,
+                    direct_upload: true,
+                    data: { 
+                      controller: "form-submission", 
+                      action: "change->form-submission#submit" 
+                    },
+                    id: "avatar-upload" %>
+              <% end %>
+
+                <%# 3. The Label (The actual clickable area) %>
+              <label for="avatar-upload" class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer flex items-center justify-center z-20">
+                <div class="text-center">
+                  <svg class="w-8 h-8 text-white mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  </svg>
+                  <p class="text-xs font-bold text-white">Change</p>
+                </div>
+              </label>
+            </div>
+            
+            <%# Online status indicator %>
+            <div class="absolute bottom-2 right-2 w-6 h-6 bg-emerald-400 border-4 border-white rounded-full shadow-lg"></div>
+          </div>
+
+          <%# Edit Profile Button %>
+          <%= link_to edit_user_path(@user),
+            class: "flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-[#5D5899] to-indigo-500 text-white text-xs font-black hover:shadow-lg hover:scale-105 transition-all uppercase tracking-wider shadow-md" do %>
+
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/>
+            </svg>
+
+            Edit Profile
+          <% end %>
+        </div>
+
+        <%# Name, Username & Bio Section %>
+        <div class="mb-8">
+          <h1 class="text-3xl font-black text-gray-900 tracking-tight leading-tight mb-1">
+            <%= [@user.name, @user.lastname].compact.join(" ").presence || "No name set" %>
+          </h1>
+          
+          <% if @user.username.present? %>
+            <div class="flex items-center gap-2 mb-3">
+              <p class="text-base font-bold text-[#5D5899]">@<%= @user.username %></p>
+              <span class="px-2 py-0.5 bg-[#5D5899]/10 text-[#5D5899] text-[10px] font-black rounded-full uppercase tracking-wider">Pro</span>
+            </div>
+          <% end %>
+          
+          
+        </div>
+
+        <%# Stats Row %>
+        <div class="grid grid-cols-3 gap-4 mb-8 pb-8 border-b border-gray-100">
+          <div class="text-center">
+            <p class="text-2xl font-black text-gray-900">127</p>
+            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mt-1">Products</p>
+          </div>
+          <div class="text-center">
+            <p class="text-2xl font-black text-gray-900">2</p>
+            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mt-1">Number of sales</p>
+          </div>
+          <div class="text-center">
+            <p class="text-2xl font-black text-gray-900">892</p>
+            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mt-1">Evaluation</p>
+          </div>
+        </div>
+
+        <%# Contact Information Header %>
+        <div class="mb-4">
+          <h2 class="text-xs font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Contact Information
+          </h2>
+        </div>
+
+        <%# Enhanced Details Grid %>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          <% if @user.email.present? %>
+            <div class="group flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 hover:border-[#5D5899] hover:shadow-md transition-all">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#5D5899] to-indigo-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Email Address</p>
+                <p class="text-sm font-bold text-gray-900 truncate"><%= @user.email %></p>
+              </div>
+              <button class="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-white rounded-lg">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+              </button>
+            </div>
+          <% end %>
+
+          <% if @user.phone_number.present? %>
+            <div class="group flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 hover:border-[#5D5899] hover:shadow-md transition-all">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                </svg>
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Phone Number</p>
+                <p class="text-sm font-bold text-gray-900"><%= @user.phone_number %></p>
+              </div>
+              <button class="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-white rounded-lg">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+              </button>
+            </div>
+          <% end %>
+
+          <% if @user.country.present? %>
+            <div class="group flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 hover:border-[#5D5899] hover:shadow-md transition-all">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Country</p>
+                <p class="text-sm font-bold text-gray-900"><%= @user.country %></p>
+              </div>
+            </div>
+          <% end %>
+
+          <% if @user.date_of_birth.present? %>
+            <div class="group flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 hover:border-[#5D5899] hover:shadow-md transition-all">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Date of Birth</p>
+                <p class="text-sm font-bold text-gray-900"><%= @user.date_of_birth.strftime("%B %d, %Y") %></p>
+              </div>
+            </div>
+          <% end %>
+
+        </div>
+      </div>
+    </div>
+
+    <%# ── Product  ── %>
+    <div class="bg-white rounded-3xl border border-gray-200 shadow-lg p-8">
+      <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-4">
+        <h2 class="text-xl font-black text-gray-900">My Products</h2>
+      </div>
+      
+      <div class="space-y-4 space-x-2 rid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2 ">
+        <%= render template: "products/index" %>
+      </div>
+    </div>
+    <%# about me  %>
+    <div class="bg-white rounded-3xl border border-gray-200 shadow-lg p-8">
+      <div class="flex items-center justify-between mb-4 border-b border-gray-200 pb-4">
+        <h2 class="text-xl font-black text-gray-900">About Me</h2>
+      </div>
+      
+          <% if @user.bio.present? %>
+            <div class="bg-gray-100/50 py-2 px-4 rounded-lg min-h-[120px] ">
+              <p class="text-[17px] text-gray-600 font-medium leading-relaxed">
+                <%= @user.bio %>
+              </p>
+            </div>
+          <% else %>
+            <p class="text-[15px] text-gray-400 italic leading-relaxed mt-4">
+              No bio added yet. Click "Edit Profile" to add one.
+            </p>
+          <% end %>
+    </div>
+  </div>
 </div>

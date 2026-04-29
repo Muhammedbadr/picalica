@@ -1,10 +1,11 @@
   class ProductsController < ApplicationController
-    before_action :authenticate_user!
+    # before_action :authenticate_user!
     # before_action :require_seller, only: [:new, :create]
     before_action :set_product, only: [:show, :edit, :update, :destroy, :step_two, :update_step_two]    
     before_action :authorize_owner!, only: [:edit, :update, :destroy]
     def index
       @products = Product.all
+      @user = current_user
     end
 
     # GET /products/1 or /products/1.json

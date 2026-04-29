@@ -1,16 +1,20 @@
 <div id="<%= dom_id product %>" class="w-full sm:w-auto my-5 space-y-5 p-6 bg-white shadow rounded-lg">
   
     
-    <p> <%= product.images.title %></p>
-    <%# correct way to check then show %>
-    <% if product.images.attached? %>
-      <%= image_tag product.images.image, width: 100 %>
-    <% end %>    
-    <p> <%= product.images.pictures.count %></p>
+   <%# ── Hero cover: images[0] has a single :image attached ── %>
+  <% hero = product.images.first %>
+  <% if hero&.image&.attached? %>
+    <p><%= hero.title %></p>
+    <%= image_tag hero.image, width: 100 %>
+  <% end %>
 
-    <% product.images.pictures.each do |pic| %>
+  <%# ── Gallery pictures: images[1+] have :pictures attached ── %>
+  <% product.images.drop(1).each do |gallery| %>
+    <p><%= gallery.pictures.count %></p>
+    <% gallery.pictures.each do |pic| %>
       <%= image_tag pic, width: 100 %>
     <% end %>
+  <% end %>
 
 
   <div >

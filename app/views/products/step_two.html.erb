@@ -1,7 +1,6 @@
 <%= form_with(model: @product, url: update_step_two_product_path(@product), local: true, validate: true , multipart: true, class: "max-w-5xl mx-auto space-y-10", method: :patch) do |f| %>
   <div class="form-section form-2 p-8 md:p-12 space-y-8" id="section-2">
     <div class="bg-white rounded-[2rem] mt-6 border border-gray-100 shadow-sm space-y-8 pt-16 -16 p-10">
-
       <div class="flex items-center space-x-4 border-b border-gray-50 pb-2 ">
         <div class="w-12 h-12 rounded-2xl bg-[#5D5899]/10 flex items-center justify-center text-[#5D5899]">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -13,7 +12,7 @@
           <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">This image will be displayed as the main preview</p>
         </div>
       </div>
-      <%# ─── HERO COVER → saves to images[0][image] ─── %>
+      <%# ─── HERO COVER → ─── %>
       <div class="space-y-3">
         <span class="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Main Product Cover</span>
 
@@ -43,7 +42,6 @@
           </div>
         </div>
       </div>
-
       <%# ─── CONTENT LAYOUT SECTION TITLE ─── %>
       <div class="flex items-center space-x-4 border-b border-gray-50 pb-2 pt-6 ">
         <div class="w-12 h-12 rounded-2xl bg-[#5D5899]/10 flex items-center justify-center text-[#5D5899]">
@@ -56,7 +54,6 @@
           <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Add and reorder blocks freely</p>
         </div>
       </div>
-
       <%# ─── BLOCKS CONTAINER ─── %>
       <div id="blocks-container" class="space-y-6">
 
@@ -149,7 +146,6 @@
         </div>
 
       </div>
-
       <%# ─── ADD NEW SECTION BUTTONS ─── %>
       <div class="bg-gray-100/60 rounded-[2.5rem] p-8 space-y-6">
         <span class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] text-center">Add New Section</span>
@@ -180,7 +176,6 @@
           </button>
         </div>
       </div>
-
       <%# ─── SUBMIT BUTTONS ─── %>
       <div class="flex justify-between items-center pt-6">
         <%= link_to edit_product_path(@product), class: "cursor-pointer text-[11px] font-black text-gray-400 hover:text-gray-900 uppercase tracking-widest transition-colors px-8 py-4 rounded-2xl hover:bg-gray-50" do %>
@@ -190,7 +185,6 @@
           Publish Product ✓
         </button>
       </div>
-
     </div>
   </div>
 <% end %>
