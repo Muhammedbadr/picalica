@@ -25,3 +25,17 @@
 #                       <span class="text-[10px] font-black uppercase">Add Images</span>
 #                     </div>
 #                   </div>
+#                   
+
+# db/seeds.rb
+data = {
+  "Shopify"       => ["Multi-purpose", "Online Store", "Landing Page"],
+  "WordPress"     => ["Blog", "Business Card", "Commercial", "Personal Website"],
+  "Graphics"      => ["Advertising Poster", "Flyer", "Works Exhibition"],
+  "HTML Templates"=> ["Control Panel", "Technical", "Script", "Content Management System"]
+}
+
+data.each do |cat_name, subs|
+  category = Category.find_or_create_by!(name: cat_name)
+  subs.each { |s| category.subcategories.find_or_create_by!(name: s) }
+end

@@ -41,33 +41,45 @@
           </div>
           
           <div class="space-y-6">
+            <%# title %>
             <div class="space-y-2">
               <%= f.label :title, "Product Title", class: "text-[11px] font-black text-gray-500 uppercase tracking-widest ml-1" %>
               <%= f.text_field :title, placeholder: "e.g. Premium Shopify Dashboard", class: "w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-100/50 focus:bg-white focus:ring-4 focus:ring-[#5D5899]/5 focus:border-[#5D5899] outline-none transition-all font-medium text-gray-900 shadow-inner" %>
             </div>
 
+            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <%# categories %>
               <div class="space-y-2">
-                <%= f.label :category_id, "Classification", class: "text-[11px] font-black text-gray-500 uppercase tracking-widest ml-1" %>
-                <%= f.select :category_id, ["Shopify", "Wordpress", "Graphics", "HTML Templates"], {}, class: "w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-100/50 focus:bg-white focus:ring-4 focus:ring-[#5D5899]/5 outline-none font-bold text-gray-700 cursor-pointer appearance-none shadow-inner" %>
+                <%= f.label :subcategory_id, "categories", class: "text-[11px] font-black text-gray-500 uppercase" %>
+                
+                <%= f.grouped_collection_select :subcategory_id, 
+                                                @categories, # Uses the variable from your controller
+                                                :subcategories, 
+                                                :name, 
+                                                :id, 
+                                                :name, 
+                                                { include_blank: "Select a Category" }, 
+                                                { class: "w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-100/50 focus:bg-white focus:ring-4 focus:ring-[#5D5899]/5 outline-none font-bold text-gray-700" } %>
               </div>
+              
+              <%# preview_url %>
               <div class="space-y-2">
                 <%= f.label :preview_url, "Live Demonstration Link", class: "text-[11px] font-black text-gray-500 uppercase tracking-widest ml-1" %>
                 <%= f.text_field :preview_url, placeholder: "https://example.com/demo", class: "w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-100/50 focus:bg-white focus:ring-4 focus:ring-[#5D5899]/5 outline-none transition-all font-medium shadow-inner" %>
               </div>
             </div>
-
+            
+            <%# tag %>
             <div class="space-y-2">
               <%# 1. Label with Tooltip Icon %>
               <div class="flex items-center space-x-2 ml-1">
-                <%= f.label :tags, "Search Tags", class: "text-[11px] font-black text-gray-500 uppercase tracking" %>
+                <%= f.label :tag_ids, "Search Tags", class: "text-[11px] font-black text-gray-500 uppercase tracking-wider" %>
                 
-                <%# Tooltip Icon (Matches the '?' in your image) %>
                 <div class="group relative cursor-help">
                   <svg class="w-3.5 h-3.5 text-gray-400 hover:text-gray-600" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8c0 1.657-1.343 3-3 3a1 1 0 100 2 3 3 0 01-3-3 1 1 0 011-1h.01a1 1 0 100-2H10z" clip-rule="evenodd" />
                   </svg>
-                  <%# Tooltip Content %>
                   <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block w-48 p-2 bg-gray-900 text-white text-[10px] rounded shadow-xl z-50 leading-tight">
                     Tags are keywords that help customers find your product more easily.
                   </div>
@@ -75,12 +87,15 @@
               </div>
 
               <%# 2. The Input Wrapper %>
-              <div class="relative">
-                <%# If you are using a library like Tom Select, it will inject the pills here. 
-                    <%# Below is the CSS-ready styling to match your Picalica screenshots. %> 
-                <%= f.text_field :tags, 
-                    placeholder: "Select tags...", 
-                    class: " w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-100/50 focus:bg-white focus:ring-4 focus:ring-[#5D5899]/5 outline-none transition-all font-medium shadow-inner" %>
+              <div class="relative w-full max-w-md mt-2">
+                <%= f.collection_select :tag_ids,
+                  Tag.order(:name), :id, :name,
+                  { include_blank: false },
+                  {
+                    multiple: true,
+                    id: "product_tag_ids",
+                    data: { controller: "chosen" }
+                  } %>
               </div>
             </div>
           </div>
@@ -281,7 +296,31 @@
       label.classList.add('text-green-600');
     }
   }
+
+  function toggleCategoryDropdown() {
+    document.getElementById('category-dropdown').classList.toggle('hidden');
+    document.getElementById('category-chevron').classList.toggle('rotate-180');
+  }
+  function selectCategory(val, el) {
+    document.getElementById('category-value').value = val;
+    document.getElementById('category-label').textContent = val;
+    document.getElementById('category-label').classList.replace('text-gray-400', 'text-gray-700');
+    document.querySelectorAll('.category-option').forEach(i => i.classList.remove('bg-indigo-50', 'text-indigo-700', 'font-semibold'));
+    el.classList.add('bg-indigo-50', 'text-indigo-700', 'font-semibold');
+    document.getElementById('category-dropdown').classList.add('hidden');
+    document.getElementById('category-chevron').classList.remove('rotate-180');
+  }
+  document.addEventListener('click', function(e) {
+    const wrap = document.getElementById('category-trigger').parentElement;
+    if (!wrap.contains(e.target)) {
+      document.getElementById('category-dropdown').classList.add('hidden');
+      document.getElementById('category-chevron').classList.remove('rotate-180');
+    }
+  });
 </script>
+
+
+
 <style>
   /* Styling the 'Pills' inside the input (for Tom Select/Select2) */
   .ts-control .item {

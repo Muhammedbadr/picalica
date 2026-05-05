@@ -16,7 +16,10 @@
     <% end %>
   <% end %>
 
-
+  <%# category %>
+ <% if @product.subcategory %>
+  <p><%= @product.subcategory.category.name %> → <%= @product.subcategory.name %></p>
+<% end %>
   <div >
     <strong class="block font-medium mb-1">Title:</strong>
     <%= product.title %>

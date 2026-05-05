@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_23_160735) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_05_072209) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -57,6 +57,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_23_160735) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_carts_on_user_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.datetime "updated_at", null: false
   end
 
   create_table "images", force: :cascade do |t|
@@ -140,6 +146,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_23_160735) do
   end
 
   create_table "products", force: :cascade do |t|
+    t.integer "category_id"
     t.datetime "created_at", null: false
     t.text "description"
     t.boolean "exclusive_product", default: false
@@ -148,10 +155,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_23_160735) do
     t.string "position"
     t.string "preview_url"
     t.string "story"
-    t.integer "subcategory_id"
+    t.bigint "subcategory_id"
     t.string "title"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.index ["category_id"], name: "index_products_on_category_id"
+    t.index ["subcategory_id"], name: "index_products_on_subcategory_id"
     t.index ["user_id"], name: "index_products_on_user_id"
   end
 
@@ -174,9 +183,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_23_160735) do
   end
 
   create_table "subcategories", force: :cascade do |t|
+    t.bigint "category_id", null: false
     t.datetime "created_at", null: false
     t.string "name"
     t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_subcategories_on_category_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -249,9 +260,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_23_160735) do
   add_foreign_key "product_files", "products"
   add_foreign_key "product_tags", "products"
   add_foreign_key "product_tags", "tags"
+  add_foreign_key "products", "subcategories"
   add_foreign_key "products", "users"
   add_foreign_key "reviews", "products"
   add_foreign_key "reviews", "users"
+  add_foreign_key "subcategories", "categories"
   add_foreign_key "texts", "products"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"

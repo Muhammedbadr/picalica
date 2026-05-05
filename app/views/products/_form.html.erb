@@ -30,8 +30,8 @@
   </div>
 
   <div class="my-5">
-    <%= form.label :subcategory_id %>
-    <%= form.text_field :subcategory_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": product.errors[:subcategory_id].none?, "border-red-400 focus:outline-red-600": product.errors[:subcategory_id].any?}] %>
+    <%= form.label :category_id %>
+    <%= form.collection_select :category_id, Category.all, :id, :name, { prompt: 'Select a category', include_blank: true }, class: "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full" %>
   </div>
 
   <div class="inline">
