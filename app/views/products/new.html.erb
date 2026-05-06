@@ -287,15 +287,7 @@
     }
   });
   // احذف هذه الدالة تماماً
-  function updateFileName(input) {
-    const label = document.getElementById('file-label');
-    if (input.files && input.files.length > 0) {
-      label.innerText = input.files.length > 1 
-        ? `${input.files.length} files selected` 
-        : input.files[0].name;
-      label.classList.add('text-green-600');
-    }
-  }
+  
 
   function toggleCategoryDropdown() {
     document.getElementById('category-dropdown').classList.toggle('hidden');
@@ -317,6 +309,8 @@
       document.getElementById('category-chevron').classList.remove('rotate-180');
     }
   });
+
+  
 </script>
 
 

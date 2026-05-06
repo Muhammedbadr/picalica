@@ -13,9 +13,9 @@ class Product < ApplicationRecord
 
 
   belongs_to :user
-  belongs_to :subcategory
+  belongs_to :subcategory 
   # Optional: helper to get the parent category directly
-  delegate :category, to: :subcategory, allow_nil: true
+  delegate :category, to: :subcategory, allow_nil: true 
   has_many :product_tags, dependent: :destroy
   has_many :tags, through: :product_tags
 
