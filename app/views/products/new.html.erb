@@ -47,7 +47,7 @@
               <%= f.text_field :title, placeholder: "e.g. Premium Shopify Dashboard", class: "w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-100/50 focus:bg-white focus:ring-4 focus:ring-[#5D5899]/5 focus:border-[#5D5899] outline-none transition-all font-medium text-gray-900 shadow-inner" %>
             </div>
 
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
               <%# categories %>
               <div class="space-y-2">
@@ -71,7 +71,7 @@
             </div>
             
             <%# tag %>
-            <div class="space-y-2">
+            <div class="space-y-2" data-controller="multi-select">
               <%# 1. Label with Tooltip Icon %>
               <div class="flex items-center space-x-2 ml-1">
                 <%= f.label :tag_ids, "Search Tags", class: "text-[11px] font-black text-gray-500 uppercase tracking-wider" %>
@@ -87,17 +87,56 @@
               </div>
 
               <%# 2. The Input Wrapper %>
-              <div class="relative w-full max-w-md mt-2">
-                <%= f.collection_select :tag_ids,
-                  Tag.order(:name), :id, :name,
-                  { include_blank: false },
-                  {
-                    multiple: true,
-                    id: "product_tag_ids",
-                    data: { controller: "chosen" }
-                  } %>
-              </div>
+              <%# 2. The Input Wrapper %>
+<div class="relative w-full mt-2">
+
+  <%# Hidden multi-select %>
+  <%= f.collection_select :tag_ids, Tag.all, :id, :name, {},
+      { multiple: true, class: "hidden", data: { multi_select_target: "hiddenSelect" } } %>
+
+  <%# Pill input box %>
+  <div class="flex flex-wrap items-center gap-2 min-h-[52px] px-4 py-2.5
+              bg-gray-100/60 border border-gray-200 rounded-2xl
+              focus-within:bg-white focus-within:border-[#7F77DD]
+              focus-within:ring-4 focus-within:ring-[#5D5899]/10
+              transition-all cursor-text"
+       id="selected-tags">
+
+    <div data-multi-select-target="pills" class="flex flex-wrap gap-2"></div>
+
+    <input type="text"
+           data-multi-select-target="input"
+           data-action="input->multi-select#filter focus->multi-select#showDropdown blur->multi-select#hideDropdown"
+           id="search"
+           class="flex-1 min-w-[120px] outline-none bg-transparent text-sm text-gray-800 placeholder:text-gray-400 py-1"
+           placeholder="Search tags…">
+  </div>
+
+  <%# Dropdown %>
+  <ul class="absolute z-50 w-full bg-white border border-gray-200 rounded-2xl
+             shadow-xl shadow-black/5 mt-1.5 overflow-hidden max-h-60 overflow-y-auto hidden
+             divide-y divide-gray-50"
+      data-multi-select-target="dropdown">
+
+    <li class="px-4 py-2 pointer-events-none">
+      <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Suggestions</span>
+    </li>
+
+    <% Tag.all.each do |tag| %>
+      <li class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 transition-colors"
+          data-action="mousedown->multi-select#select"
+          data-tag-id="<%= tag.id %>"
+          data-tag-name="<%= tag.name %>">
+        <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h11a2 2 0 012 2v11l-7 7L3 13V5a2 2 0 012-2h2z"/>
+        </svg>
+        <%= tag.name %>
+      </li>
+    <% end %>
+  </ul>
+</div>
             </div>
+            
           </div>
 
           <%# SECTION 2: TECHNICAL SPECIFICATIONS & RELEASES %>
@@ -286,8 +325,8 @@
       });
     }
   });
-  // احذف هذه الدالة تماماً
-  
+   // Hero image preview
+ 
 
   function toggleCategoryDropdown() {
     document.getElementById('category-dropdown').classList.toggle('hidden');
@@ -302,15 +341,77 @@
     document.getElementById('category-dropdown').classList.add('hidden');
     document.getElementById('category-chevron').classList.remove('rotate-180');
   }
-  document.addEventListener('click', function(e) {
-    const wrap = document.getElementById('category-trigger').parentElement;
-    if (!wrap.contains(e.target)) {
-      document.getElementById('category-dropdown').classList.add('hidden');
-      document.getElementById('category-chevron').classList.remove('rotate-180');
+
+  // dropdown
+  document.addEventListener('DOMContentLoaded', () => {
+    // Multi-select functionality
+    const wrapper = document.querySelector('[data-controller="multi-select"]');
+    if (wrapper) {
+      const input = wrapper.querySelector('[data-multi-select-target="input"]');
+      const dropdown = wrapper.querySelector('[data-multi-select-target="dropdown"]');
+      const pills = wrapper.querySelector('[data-multi-select-target="pills"]');
+      const hiddenSelect = wrapper.querySelector('[data-multi-select-target="hiddenSelect"]');
+
+      // Show dropdown on focus
+      if (input) {
+        input.addEventListener('focus', () => {
+          dropdown.classList.remove('hidden');
+        });
+
+        input.addEventListener('blur', () => {
+          setTimeout(() => {
+            dropdown.classList.add('hidden');
+          }, 100);
+        });
+
+        // Filter tags on input
+        input.addEventListener('input', (e) => {
+          const value = e.target.value.toLowerCase();
+          dropdown.querySelectorAll('li').forEach(li => {
+            const tagName = li.textContent.toLowerCase();
+            li.style.display = tagName.includes(value) ? '' : 'none';
+          });
+        });
+      }
+
+      // Select tag on click
+      dropdown.querySelectorAll('li').forEach(li => {
+        li.addEventListener('mousedown', (e) => {
+          e.preventDefault();
+          const tagId = li.dataset.tagId;
+          const tagName = li.dataset.tagName;
+
+          // Check if already selected
+          if (pills.querySelector(`[data-tag-id="${tagId}"]`)) return;
+
+          // Add to hidden select
+          const option = document.createElement('option');
+          option.value = tagId;
+          option.textContent = tagName;
+          option.selected = true;
+          hiddenSelect.appendChild(option);
+
+          // Add pill
+          const pill = document.createElement('span');
+          pill.className = 'bg-indigo-500 text-white px-3 py-1 rounded-full text-sm flex items-center gap-2';
+          pill.dataset.tagId = tagId;
+          pill.innerHTML = `${tagName} <button type="button" class="ml-1 text-xs font-bold">&times;</button>`;
+
+          pill.querySelector('button').addEventListener('click', (e) => {
+            e.preventDefault();
+            pill.remove();
+            hiddenSelect.querySelector(`option[value="${tagId}"]`).remove();
+          });
+
+          pills.appendChild(pill);
+          input.value = '';
+          dropdown.classList.remove('hidden');
+          input.focus();
+        });
+      });
     }
   });
 
-  
 </script>
 
 
@@ -344,6 +445,40 @@
     padding: 10px 20px !important;
     font-weight: 500;
     color: #4B5563;
+  }
+
+  /* Multi-select dropdown styles */
+  [data-multi-select-target="dropdown"] {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-top: none;
+    border-radius: 0 0 0.5rem 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    max-height: 15rem;
+    overflow-y: auto;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  [data-multi-select-target="dropdown"].hidden {
+    display: none;
+  }
+
+  [data-multi-select-target="dropdown"] li {
+    padding: 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.15s;
+  }
+
+  [data-multi-select-target="dropdown"] li:hover {
+    background-color: #e0e7ff;
   }
 </style>
       

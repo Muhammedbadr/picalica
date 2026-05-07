@@ -1,24 +1,87 @@
-<label class="block group cursor-pointer">
-  <div class="border-2 border-dashed border-gray-200 rounded-[2.5rem] p-12 flex flex-col items-center justify-center bg-gray-100/50 group-hover:bg-white group-hover:border-[#5D5899] group-hover:shadow-2xl group-hover:shadow-[#5D5899]/5 transition-all duration-500">
-    
-    <div class="w-20 h-20 bg-white rounded-3xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#5D5899]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-      </svg>
-    </div>
-    <h4 id="file-label" class="text-lg font-black text-gray-900 tracking-tight">Drop your product archive</h4>
-    <p class="text-xs text-gray-400 mt-2 font-bold uppercase tracking-widest opacity-60">ZIP, PDF, or JPG up to 500MB</p>
-    
-    <%= f.fields_for :product_files do |ff| %>
-      <div class="space-y-4 mt-4">
-        <span class="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Master Files</span>
-        
-        <label class="block group cursor-pointer">
-          <div class="border-2 border-dashed ... (all your tailwind classes) ...">
-            <%= ff.file_field :attachment, class: "hidden", onchange: "updateFileName(this)" %>
+<div class="space-y-4">
+  
+  <%= f.fields_for :product_files do |ff| %>
+    <div class="space-y-3">
+      <!-- FILE INPUT AREA -->
+      <label class="block group cursor-pointer">
+        <div class="border-2 border-dashed border-gray-200 rounded-[2.5rem] p-12 flex flex-col items-center justify-center bg-gray-100/50 group-hover:bg-white group-hover:border-[#5D5899] group-hover:shadow-2xl group-hover:shadow-[#5D5899]/5 transition-all duration-500" id="upload-area-<%= ff.index %>">
+          
+          <div class="w-20 h-20 bg-white rounded-3xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#5D5899]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
           </div>
-        </label>
+          
+          <h4 class="text-lg font-black text-gray-900 tracking-tight file-label-<%= ff.index %>">Drop your product archive</h4>
+          <p class="text-xs text-gray-400 mt-2 font-bold uppercase tracking-widest opacity-60">ZIP, PDF, or JPG up to 500MB</p>
+          
+          <%= ff.file_field :attachment, class: "hidden", id: "file-input-#{ff.index}", onchange: "handleFileUpload(this, #{ff.index})" %>
+        </div>
+      </label>
+      
+      <!-- UPLOADED FILE DISPLAY -->
+      <div class="uploaded-file-<%= ff.index %> hidden">
+        <div class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-black text-gray-900 file-name-<%= ff.index %>">File selected</p>
+              <p class="text-xs text-gray-500 file-size-<%= ff.index %>"></p>
+            </div>
+          </div>
+          <button type="button" onclick="removeFile(this, <%= ff.index %>)" class="cursor-pointer text-gray-400 hover:text-rose-500 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
       </div>
-    <% end %>
-  </div>
-</label>
+    </div>
+  <% end %>
+</div>
+
+<script>
+function handleFileUpload(input, index) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const uploadArea = document.getElementById(`upload-area-${index}`);
+  const uploadedFileDiv = document.querySelector(`.uploaded-file-${index}`);
+  const fileNameEl = document.querySelector(`.file-name-${index}`);
+  const fileSizeEl = document.querySelector(`.file-size-${index}`);
+
+  // Format file size
+  const bytes = file.size;
+  let sizeText = '';
+  if (bytes > 1024 * 1024) {
+    sizeText = `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+  } else {
+    sizeText = `${(bytes / 1024).toFixed(2)} KB`;
+  }
+
+  // Update display
+  fileNameEl.textContent = file.name;
+  fileSizeEl.textContent = sizeText;
+  
+  // Show uploaded file section, hide upload area
+  uploadArea.classList.add('hidden');
+  uploadedFileDiv.classList.remove('hidden');
+}
+
+function removeFile(button, index) {
+  const input = document.getElementById(`file-input-${index}`);
+  const uploadArea = document.getElementById(`upload-area-${index}`);
+  const uploadedFileDiv = document.querySelector(`.uploaded-file-${index}`);
+
+  // Clear file input
+  input.value = '';
+  
+  // Hide uploaded file section, show upload area
+  uploadedFileDiv.classList.add('hidden');
+  uploadArea.classList.remove('hidden');
+}
+</script>

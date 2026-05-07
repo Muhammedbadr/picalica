@@ -3,8 +3,3 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import { Turbo } from "@hotwired/turbo-rails"
-
-
-
-import mobiscroll from '@mobiscroll/javascript-lite';
-import '@mobiscroll/javascript-lite/dist/css/mobiscroll.min.css';

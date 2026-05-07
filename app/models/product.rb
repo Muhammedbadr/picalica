@@ -46,19 +46,4 @@ class Product < ApplicationRecord
   end
 
   # This allows filtering like: Product.tagged_with("online store")
-  def self.tagged_with(name)
-    Tag.find_by!(name: name).products
-  end
-
-  # Helper to show tags as a string (e.g., "online store, personal website")
-  def tag_list
-    tags.map(&:name).join(", ")
-  end
-
-  # This logic creates tags automatically if you type a new one
-  def tag_list=(names)
-    self.tags = names.split(",").map do |n|
-      Tag.where(name: n.strip).first_or_create!
-    end
-  end
 end

@@ -17,9 +17,26 @@
   <% end %>
 
   <%# category %>
- <% if @product.subcategory %>
-  <p><%= @product.subcategory.category.name %> → <%= @product.subcategory.name %></p>
-<% end %>
+  <% if @product.subcategory %>
+    <p><%= @product.subcategory.category.name %> → <%= @product.subcategory.name %></p>
+  <% end %>
+
+
+    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest">Selected Tags</h3>
+    <div class="flex flex-wrap gap-2 mt-2">
+      <%# CRITICAL: Use @product.tags, NOT Tag.all %>
+      <% if @product.tags.any? %>
+        <% @product.tags.each do |tag| %>
+          <span class="bg-indigo-600 text-white text-[10px] font-bold px-2 py-1 rounded uppercase">
+            <%= tag.name %>
+          </span>
+        <% end %>
+      <% else %>
+        <span class="text-gray-400 text-sm">No tags selected for this product.</span>
+      <% end %>
+    </div>
+
+  
   <div >
     <strong class="block font-medium mb-1">Title:</strong>
     <%= product.title %>
