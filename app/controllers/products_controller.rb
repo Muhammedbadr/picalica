@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy, :step_two, :update_step_two]
-  before_action :authorize_owner!, only: [:edit, :update, :destroy]
-  before_action :set_categories, only: [:new, :create, :edit, :update]  # ← add this
+  before_action :set_product, only: [ :show, :edit, :update, :destroy, :step_two, :update_step_two ]
+  before_action :authorize_owner!, only: [ :edit, :update, :destroy ]
+  before_action :set_categories, only: [ :new, :create, :edit, :update ]  # ← add this
 
   def index
     @products = Product.all
@@ -24,6 +24,8 @@ class ProductsController < ApplicationController
     @product = Product.new
     @product.licenses.build
     @product.product_files.build
+    @product.texts.build if @product.texts.empty?
+    @product.videos.build if @product.videos.empty?
   end
 
   def create
@@ -32,12 +34,15 @@ class ProductsController < ApplicationController
     if @product.save
       redirect_to step_two_product_path(@product), notice: "Basic data has been saved!"
     else
+      puts @product.errors.full_messages
       render :new, status: :unprocessable_entity
     end
   end
 
   def step_two
     @product = Product.find(params[:id])
+    @product.texts.build if @product.texts.empty?
+    @product.videos.build if @product.videos.empty?
   end
 
   def update_step_two
@@ -84,15 +89,17 @@ class ProductsController < ApplicationController
       :heading, :title, :description, :story, :position,
       :preview_url, :exclusive_product, :issue_number,
       :category_id, :subcategory_id,
-      licenses_attributes: [:id, :price, :title_name, :_destroy],
-      product_files_attributes: [:id, :attachment, :_destroy],
+      licenses_attributes: [ :id, :price, :title_name, :_destroy ],
+      product_files_attributes: [ :id, :attachment, :_destroy ],
       tag_ids: []
     )
   end
 
   def product_step_two_params
     params.require(:product).permit(
-      images_attributes: [:id, :title, :_destroy, :image, pictures: []]
+      images_attributes: [ :id, :title, :_destroy, :image, pictures: [] ],
+      texts_attributes: [ :id, :title, :description, :_destroy ],
+      videos_attributes: [ :id, :title, :link, :_destroy]
     )
   end
 

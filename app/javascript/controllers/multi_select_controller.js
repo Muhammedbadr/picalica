@@ -59,29 +59,29 @@ export default class extends Controller {
     this.inputTarget.focus()
   }
 
- createPill(tagId, tagName) {
- const colors = [
-  {
-      bg: "#5D5899",
-      text: "#ffffff",
-      dotHover: "rgb(115, 115, 204)"
-    }
-  ]
-  const c = colors[this._colorIdx++ % colors.length]
-  
-  const pill = document.createElement('span')
-  pill.dataset.tagId = tagId
-  pill.style.cssText = `display:inline-flex;align-items:center;gap:6px;background:${c.bg};color:${c.text};font-size:12px;font-weight:500;padding:4px 10px 4px 12px;border-radius:999px;`
+  createPill(tagId, tagName) {
+  const colors = [
+    {
+        bg: "#5D5899",
+        text: "#ffffff",
+        dotHover: "rgb(115, 115, 204)"
+      }
+    ]
+    const c = colors[this._colorIdx++ % colors.length]
+    
+    const pill = document.createElement('span')
+    pill.dataset.tagId = tagId
+    pill.style.cssText = `display:inline-flex;align-items:center;gap:6px;background:${c.bg};color:${c.text};font-size:12px;font-weight:500;padding:4px 10px 4px 12px;border-radius:999px;`
 
-  const btn = document.createElement('button')
-  btn.type = 'button'
-  btn.style.cssText = `width:16px;height:16px;border-radius:50%;background:${c.dot};border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;color:${c.text};font-size:11px;`
-  btn.textContent = '×'
-  btn.addEventListener('click', (e) => this.removePill(e, tagId, pill))
+    const btn = document.createElement('button')
+    btn.type = 'button'
+    btn.style.cssText = `width:16px;height:16px;border-radius:50%;background:${c.dot};border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;color:${c.text};font-size:11px;`
+    btn.textContent = '×'
+    btn.addEventListener('click', (e) => this.removePill(e, tagId, pill))
 
-  pill.append(document.createTextNode(tagName + ' '), btn)
-  return pill
-}
+    pill.append(document.createTextNode(tagName + ' '), btn)
+    return pill
+  }
 
   removePill(event, tagId, pill) {
     event.preventDefault()

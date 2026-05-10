@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_05_072209) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_10_063943) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -63,6 +63,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_05_072209) do
     t.datetime "created_at", null: false
     t.string "name"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "feature_items", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.bigint "feature_section_id", null: false
+    t.string "item_title"
+    t.datetime "updated_at", null: false
+    t.index ["feature_section_id"], name: "index_feature_items_on_feature_section_id"
+  end
+
+  create_table "feature_sections", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "product_id", null: false
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_feature_sections_on_product_id"
   end
 
   create_table "images", force: :cascade do |t|
@@ -236,8 +253,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_05_072209) do
   end
 
   create_table "videos", force: :cascade do |t|
-    t.text "content"
     t.datetime "created_at", null: false
+    t.string "link"
     t.bigint "product_id", null: false
     t.string "title"
     t.datetime "updated_at", null: false
@@ -249,6 +266,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_05_072209) do
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "products"
   add_foreign_key "carts", "users"
+  add_foreign_key "feature_items", "feature_sections"
+  add_foreign_key "feature_sections", "products"
   add_foreign_key "images", "products"
   add_foreign_key "licenses", "products"
   add_foreign_key "list_tags", "lists"

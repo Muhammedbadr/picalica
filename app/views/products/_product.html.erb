@@ -16,6 +16,13 @@
     <% end %>
   <% end %>
 
+ <% @product.texts.each do |text| %>
+  <div class="text-block">
+    <p><strong><%= text.title %></strong></p>
+    <p><%= text.description %></p>
+  </div>
+<% end %>
+
   <%# category %>
   <% if @product.subcategory %>
     <p><%= @product.subcategory.category.name %> → <%= @product.subcategory.name %></p>
@@ -61,15 +68,19 @@
     <strong class="block font-medium mb-1">preview_url:</strong>
     <%= product.preview_url %>
   </div>
+  <% @product.videos.each do |video| %>
+    <p><%= video.title %></p>
+    <p><%= link_to video.link, video.link, target: :_blank %></p>
+  <% end %>
   <div>
     <strong class="block font-medium mb-1">Version:</strong>
     <%= product.issue_number %>
   </div>
 
-  <div>
+  <%# <div>
     <strong class="block font-medium mb-1">Description:</strong>
     <%= product.description %>
-  </div>
+  <%# </div> %>
 
   <%# IMPORTANT: Check if you added the price column yet! %>
   <% product.licenses.each do |license| %>
