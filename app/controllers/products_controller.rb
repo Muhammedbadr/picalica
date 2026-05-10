@@ -17,6 +17,7 @@ class ProductsController < ApplicationController
     @product.licenses.build      if @product.licenses.empty?
     @product.product_files.build if @product.product_files.empty?
     @product.images.build        if @product.images.empty?
+    @product.build_feature_section if @product.feature_section.nil?
     # REMOVED the wrong lines
   end
 
@@ -26,6 +27,12 @@ class ProductsController < ApplicationController
     @product.product_files.build
     @product.texts.build if @product.texts.empty?
     @product.videos.build if @product.videos.empty?
+    # Logic for Feature Section (has_one)
+    # This builds one "block" or "section"
+    feature_section = @product.feature_sections.build
+    
+    # This builds one "row" inside that section
+    feature_section.feature_items.build
   end
 
   def create
@@ -43,6 +50,10 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
     @product.texts.build if @product.texts.empty?
     @product.videos.build if @product.videos.empty?
+   feature_section = @product.feature_sections.build
+    # This builds one "row" inside that section
+    feature_section.feature_items.build
+
   end
 
   def update_step_two
@@ -99,7 +110,11 @@ class ProductsController < ApplicationController
     params.require(:product).permit(
       images_attributes: [ :id, :title, :_destroy, :image, pictures: [] ],
       texts_attributes: [ :id, :title, :description, :_destroy ],
-      videos_attributes: [ :id, :title, :link, :_destroy]
+      videos_attributes: [ :id, :title, :link, :_destroy],
+      feature_sections_attributes: [ # <--- CORRECT (Plural)
+          :id, :title, :_destroy,
+            feature_items_attributes: [:id, :item_title, :description, :_destroy]
+      ]
     )
   end
 

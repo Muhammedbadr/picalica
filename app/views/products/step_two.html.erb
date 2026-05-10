@@ -109,9 +109,16 @@
 
           <div class="flex-1 p-8 text-left space-y-4">
             <span class="inline-block text-[9px] font-black px-4 py-1 rounded-full bg-amber-100 text-amber-600 tracking-widest uppercase">Feature List</span>
-            <input type="text" value="Features" class="w-full bg-transparent border-none outline-none text-xl font-black text-gray-900 placeholder-gray-300">
+            <%= f.fields_for :feature_sections do |fs_f| %>
+             
+              <%= fs_f.text_field :title, 
+                value: "Feature ",
+                placeholder: "Section Title",
+                class: "w-full bg-transparent border-none outline-none text-xl font-black text-gray-900 placeholder-gray-300" 
+              %>
+            <% end %>
             <div class="features-list space-y-3"></div>
-            <button type="button" onclick="addFeature(this)" class="bg-[#5D5899] text-white px-6 py-2.5 rounded-xl text-[10px] font-black flex items-center gap-2 cursor-pointer"><span>+</span> Add List Item</button>
+            <button type="button" onclick="addFeature(this, 0)" class="bg-[#5D5899] text-white px-6 py-2.5 rounded-xl text-[10px] font-black flex items-center gap-2 cursor-pointer"><span>+</span> Add List Item</button>
           </div>
         </div>
 
@@ -280,11 +287,21 @@
       bodyHTML = `
         <div class="flex-1 p-8 text-left space-y-4">
           <span class="inline-block text-[9px] font-black px-4 py-1 rounded-full bg-amber-100 text-amber-600 tracking-widest uppercase">Feature List</span>
-          <input type="text" placeholder="Section Header" class="w-full bg-transparent border-none outline-none text-xl font-black text-gray-900 placeholder-gray-300">
+          
+          <input type="text" 
+                name="product[feature_sections_attributes][${uid}][title]" 
+                placeholder="Section Title" 
+                class="w-full bg-transparent border-none outline-none text-xl font-black text-gray-900 placeholder-gray-300">
+          
           <div class="features-list space-y-3"></div>
-          <button type="button" onclick="addFeature(this)" class="bg-[#5D5899] text-white px-6 py-2.5 rounded-xl text-[10px] font-black flex items-center gap-2 cursor-pointer"><span>+</span> Add List Item</button>
+          
+          <button type="button" 
+                  onclick="addFeature(this, ${uid})" 
+                  class="bg-[#5D5899] text-white px-6 py-2.5 rounded-xl text-[10px] font-black flex items-center gap-2 cursor-pointer">
+            <span>+</span> Add List Item
+          </button>
+          
         </div>`;
-
     } else if (type === 'image') {
       // uid is the index — every new image block gets a unique number
       // so they save as separate Image records in the database
@@ -376,18 +393,33 @@
         reader.readAsDataURL(input.files[0]);
       }
   }
-  function addFeature(btn) {
-    const list = btn.previousElementSibling;
-    const item = document.createElement('div');
-    item.className = 'feature-item flex items-start gap-4 border-l-[4px] border-[#5D5899] pl-6 py-1';
-    item.innerHTML = `
-      <div class="flex-1">
-        <input type="text" placeholder="Feature Title" class="w-full bg-transparent border-none outline-none text-base font-black text-gray-900 block mb-1">
-        <textarea placeholder="Description..." class="w-full bg-transparent border-none outline-none text-base font-semibold text-gray-400 min-h-[28px]" oninput="autoResize(this)"></textarea>
-      </div>
-      <button onclick="this.parentElement.remove()" class="cursor-pointer text-gray-300 hover:text-red-500 text-xl font-bold">×</button>`;
-    list.appendChild(item);
-  }
+
+  function addFeature(btn, sectionIndex) {
+  const list = btn.previousElementSibling;
+  const itemIndex = new Date().getTime(); 
+  
+  const item = document.createElement('div');
+  item.className = 'feature-item flex items-start gap-4 border-l-[4px] border-[#5D5899] pl-6 py-1';
+  
+  item.innerHTML = `
+    <div class="flex-1">
+    
+      <input type="text" 
+            name="product[feature_sections_attributes][${sectionIndex}][feature_items_attributes][${itemIndex}][item_title]" 
+            placeholder="Item Title"
+            class="w-full bg-transparent border-none outline-none text-base font-black text-gray-900 block mb-1">
+      
+      <textarea name="product[feature_sections_attributes][${sectionIndex}][feature_items_attributes][${itemIndex}][description]" 
+                placeholder="Item Description" 
+                class="w-full bg-transparent border-none outline-none text-base font-semibold text-gray-600 min-h-[28px]" 
+                oninput="autoResize(this)"></textarea>
+    </div>
+    <button type="button" onclick="this.parentElement.remove()" class="text-gray-300 hover:text-red-500 text-xl font-bold">×</button>
+  `;
+
+  list.appendChild(item);
+}
+
   function autoResize(el) {
     el.style.height = 'auto';
     el.style.height = el.scrollHeight + 'px';

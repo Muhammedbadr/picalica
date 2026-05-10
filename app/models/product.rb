@@ -16,8 +16,8 @@ class Product < ApplicationRecord
   belongs_to :user
   belongs_to :subcategory 
   # has_one
-  has_one :feature_section, dependent: :destroy
-  # Optional: helper to get the parent category directly
+  has_many :feature_sections, dependent: :destroy  # Optional: helper to get the parent category directly
+  
   delegate :category, to: :subcategory, allow_nil: true 
   # has_many
   has_many :product_tags, dependent: :destroy
@@ -32,6 +32,7 @@ class Product < ApplicationRecord
   has_many :product_files, dependent: :destroy
   
   # accepts_nested_attributes
+  accepts_nested_attributes_for :feature_sections, allow_destroy: true
   accepts_nested_attributes_for :images, allow_destroy: true
   accepts_nested_attributes_for :licenses, allow_destroy: true
   accepts_nested_attributes_for :product_files, allow_destroy: true, reject_if: :all_blank

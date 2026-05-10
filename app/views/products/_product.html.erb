@@ -68,10 +68,28 @@
     <strong class="block font-medium mb-1">preview_url:</strong>
     <%= product.preview_url %>
   </div>
+  
   <% @product.videos.each do |video| %>
     <p><%= video.title %></p>
     <p><%= link_to video.link, video.link, target: :_blank %></p>
   <% end %>
+  
+  <% @product.feature_sections.each do |section| %>
+  <div class="feature-block mb-8">
+    <h2 class="text-2xl font-bold text-[#5D5899] mb-4">
+      <%= section.title %>
+    </h2>
+
+    <div class="items-list space-y-4">
+      <% section.feature_items.each do |item| %>
+        <div class="item pl-4 border-l-2 border-gray-200">
+          <h4 class="font-bold"><%= item.item_title %></h4>
+          <p class="text-gray-500"><%= item.description %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
   <div>
     <strong class="block font-medium mb-1">Version:</strong>
     <%= product.issue_number %>
