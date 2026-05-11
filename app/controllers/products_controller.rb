@@ -6,6 +6,7 @@ class ProductsController < ApplicationController
   def index
     @products = Product.all
     @user = current_user
+    
   end
 
   def show
@@ -17,7 +18,7 @@ class ProductsController < ApplicationController
     @product.licenses.build      if @product.licenses.empty?
     @product.product_files.build if @product.product_files.empty?
     @product.images.build        if @product.images.empty?
-    @product.build_feature_section if @product.feature_section.nil?
+    @product.build_feature_sections if @product.feature_sections.nil?
     # REMOVED the wrong lines
   end
 
@@ -59,9 +60,10 @@ class ProductsController < ApplicationController
   def update_step_two
     @product = Product.find(params[:id])
     if @product.update(product_step_two_params)
-      redirect_to @product, notice: "Product was successfully updated."
+      redirect_to @product, notice: "Saved!"
     else
-      render :step_two, status: :unprocessable_entity
+      # This line triggers the .field_with_errors CSS and the alert at the top
+      render :step_two, status: :unprocessable_entity 
     end
   end
 

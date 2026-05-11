@@ -31,12 +31,38 @@ tags.each do |tag_name|
 end
 
 data = {
-  "Shopify"       => ["Multi-purpose", "Online Store", "Landing Page"],
-  "WordPress"     => ["Blog", "Business Card", "Commercial", "Personal Website"],
-  "Graphics"      => ["Advertising Poster", "Flyer", "Works Exhibition"],
-  "HTML Templates"=> ["Control Panel", "Technical", "Script", "Content Management System"]
+  "Templates" => [
+    "WordPress", 
+    "Shopify", 
+    "Landing Pages", 
+    "Dashboards", 
+    "Email Templates", 
+    "Other"
+  ],
+  "Designs" => [
+    "UI/UX Interfaces", 
+    "Social Media", 
+    "Flyers & Brochures", 
+    "Illustrations", 
+    "Menus", 
+    "Mockups", 
+    "Branding & Visual Identity", 
+    "Other"
+  ],
+  "Documents" => [
+    "Presentations", 
+    "CVs & Resumes", 
+    "Business & Finance", 
+    "Invoices", 
+    "Other"
+  ],
+  "Applications" => [
+    "Web Apps (E-commerce, Management Tools)", 
+    "Mobile Apps (Android, iOS, Flutter, React Native)", 
+    "Plugins (WordPress)", 
+    "Other"
+  ]
 }
-
 data.each do |cat_name, subs|
   category = Category.find_or_create_by!(name: cat_name)
   subs.each { |s| category.subcategories.find_or_create_by!(name: s) }

@@ -101,9 +101,14 @@
 
         <%# Stats Row %>
         <div class="grid grid-cols-3 gap-4 mb-8 pb-8 border-b border-gray-100">
+          <%# number product i created %>
           <div class="text-center">
-            <p class="text-2xl font-black text-gray-900">127</p>
-            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mt-1">Products</p>
+            <div class="text-2xl font-black  tracking-tight">
+              <%= @products.count %>
+            </div>
+            <p class="text-[10px] font-black text-gray-400 uppercase  mt-1">
+              Total Products
+            </p>
           </div>
           <div class="text-center">
             <p class="text-2xl font-black text-gray-900">2</p>

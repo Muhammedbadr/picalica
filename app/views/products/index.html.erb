@@ -1,5 +1,22 @@
 <div class="max-w-7xl mx-auto mt-8 px-4 py-8">
 
+    <%# --- BREADCRUMBS --- %>
+  <%# Hide breadcrumbs if we are on the Home page %>
+  <% unless controller_name == 'home' %>
+    <div class="mb-10">
+      <nav class="flex items-center space-x-3 text-[11px] font-black uppercase tracking-[0.15em] text-gray-400 mb-4">
+        <a href="/" class="hover:text-[#5D5899] transition-all flex items-center group">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1.5 opacity-60 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          Home
+        </a>
+        <span class="text-gray-600 font-light">/</span>
+        <a href="<%= products_path %>" class="text-[#5D5899] opacity-90 transition-all">My Products</a>
+      </nav>
+    </div>
+  <% end %>
+    
   <%# Header %>
   <div class="flex items-center justify-between mb-8">
     <h1 class="text-2xl font-semibold text-gray-900">Design</h1>

@@ -1,3 +1,18 @@
 @import "https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.tailwind.min.css";
 @import "tailwindcss";
 @import "tom-select/dist/css/tom-select.css";
+/* Inside application.tailwind.css */
+
+.field_with_errors {
+  @apply contents; /* This prevents the div from breaking your flex/grid layout */
+}
+
+.field_with_errors input, 
+.field_with_errors textarea {
+  @apply border-red-500 bg-red-50 focus:ring-red-500/20 focus:border-red-600 !important;
+}
+
+.field_with_errors::before {
+  content: "Required Field";
+  @apply block text-[10px] font-black text-red-500 uppercase tracking-widest mb-1 ml-1;
+}

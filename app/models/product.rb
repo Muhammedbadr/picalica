@@ -1,11 +1,11 @@
 class Product < ApplicationRecord
   # before_action :authenticate_user!
-  
+
   # validates
+  validates :title, presence: true
   validates :description, presence: true
   validates_associated :licenses
-  validates :title, presence: true
-
+  validates_associated :texts, :feature_sections
   # 2. This ensures that IF there is a title, it starts with a capital letter
   validates :title, format: {
     with: /\A[A-Z]/,
@@ -45,5 +45,6 @@ class Product < ApplicationRecord
     images.image.variant(resize: [ 300, 300 ]).processed
   end
 
+  
   # This allows filtering like: Product.tagged_with("online store")
 end
