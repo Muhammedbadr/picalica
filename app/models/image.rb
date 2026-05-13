@@ -8,6 +8,6 @@ class Image < ApplicationRecord
       width: { min: 1700 },
       message: "The image width must be 1700 px or larger"
     }
-  validates :image, presence: true
-  validates :pictures, presence: true
+  # validates :image, presence: true
+  # validates :pictures, presence: true
 end

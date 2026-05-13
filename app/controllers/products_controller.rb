@@ -4,11 +4,15 @@ class ProductsController < ApplicationController
   before_action :set_categories, only: [ :new, :create, :edit, :update ]  # ← add this
 
   def index
-  @q = Product.ransack(params[:q])
+    @q = Product.ransack(params[:q])
     @products = @q.result(distinct: true)
-         @user = current_user
+    @user = current_user
+    if params[:subcategory].present?
+      @products = @products.joins(:subcategory).where(subcategories: { name: params[:subcategory] })
+    end
   end
 
+  
   def show
   end
 
