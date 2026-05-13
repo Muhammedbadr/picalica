@@ -46,5 +46,14 @@ class Product < ApplicationRecord
   end
 
   
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["title"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["subcategory", "category", "tags"]
+  end
+
   # This allows filtering like: Product.tagged_with("online store")
 end

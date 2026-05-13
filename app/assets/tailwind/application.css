@@ -9,7 +9,7 @@
 
 .field_with_errors input, 
 .field_with_errors textarea {
-  @apply border-red-500 bg-red-50 focus:ring-red-500/20 focus:border-red-600 !important;
+  @apply border-red-500 bg-red-50 focus:ring-red-500/20 focus:border-red-600 ;
 }
 
 .field_with_errors::before {

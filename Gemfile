@@ -73,3 +73,5 @@ gem 'active_storage_validations'
 gem "mini_magick"
 gem 'client_side_validations'
 
+
+gem "ransack", "~> 4.4"

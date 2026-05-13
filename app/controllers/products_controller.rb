@@ -4,9 +4,9 @@ class ProductsController < ApplicationController
   before_action :set_categories, only: [ :new, :create, :edit, :update ]  # ← add this
 
   def index
-    @products = Product.all
-    @user = current_user
-    
+  @q = Product.ransack(params[:q])
+    @products = @q.result(distinct: true)
+         @user = current_user
   end
 
   def show
@@ -31,7 +31,7 @@ class ProductsController < ApplicationController
     # Logic for Feature Section (has_one)
     # This builds one "block" or "section"
     feature_section = @product.feature_sections.build
-    
+
     # This builds one "row" inside that section
     feature_section.feature_items.build
   end
@@ -54,7 +54,6 @@ class ProductsController < ApplicationController
    feature_section = @product.feature_sections.build
     # This builds one "row" inside that section
     feature_section.feature_items.build
-
   end
 
   def update_step_two
@@ -63,7 +62,7 @@ class ProductsController < ApplicationController
       redirect_to @product, notice: "Saved!"
     else
       # This line triggers the .field_with_errors CSS and the alert at the top
-      render :step_two, status: :unprocessable_entity 
+      render :step_two, status: :unprocessable_entity
     end
   end
 
@@ -112,10 +111,10 @@ class ProductsController < ApplicationController
     params.require(:product).permit(
       images_attributes: [ :id, :title, :_destroy, :image, pictures: [] ],
       texts_attributes: [ :id, :title, :description, :_destroy ],
-      videos_attributes: [ :id, :title, :link, :_destroy],
+      videos_attributes: [ :id, :title, :link, :_destroy ],
       feature_sections_attributes: [ # <--- CORRECT (Plural)
           :id, :title, :_destroy,
-            feature_items_attributes: [:id, :item_title, :description, :_destroy]
+            feature_items_attributes: [ :id, :item_title, :description, :_destroy ]
       ]
     )
   end
