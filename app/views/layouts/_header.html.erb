@@ -15,7 +15,8 @@
         <div class="hidden lg:flex items-center gap-8">
           <% if user_signed_in? %>
             <%= link_to "Upload Product +",  new_product_path, class: "text-sm font-bold bg-white/10 px-3 py-1.5 rounded-lg hover:bg-white/20 transition-all" %>
-            <%= link_to "My Products", products_path, class: "text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity" %>
+            <%= link_to "My Products",  my_product_products_path, class: "text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity" %>
+            <%# <%= link_to "My Products", products_path, class: "text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity" %> 
           <% end %>
             <%# Categories Mega Dropdown %>
           <div class="relative" id="categoriesWrapper">

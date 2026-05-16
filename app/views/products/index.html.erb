@@ -1,108 +1,85 @@
 <div class="max-w-7xl mx-auto mt-8 px-4 py-8">
+  <%# 1. Loop through each category to create segmented rows %>
+  <% @nav_categories.each do |category| %>
+    <%# Fetch products specifically belonging to this loop's category %>
+    <% category_products = category.products.limit(4) %>
+    
+    <%# Skip rendering the category section entirely if it has no products %>
+    <% next unless category_products.any? %>
 
-    <%# --- BREADCRUMBS --- %>
-  <%# Hide breadcrumbs if we are on the Home page %>
-  <% unless controller_name == 'home' %>
-    <div class="mb-10">
-      <nav class="flex items-center space-x-3 text-[11px] font-black uppercase tracking-[0.15em] text-gray-400 mb-4">
-        <a href="/" class="hover:text-[#5D5899] transition-all flex items-center group">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1.5 opacity-60 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-          </svg>
-          Home
-        </a>
-        <span class="text-gray-600 font-light">/</span>
-        <a href="<%= products_path %>" class="text-[#5D5899] opacity-90 transition-all">My Products</a>
-      </nav>
-      <div class="space-y-1">
-        <h1 class="text-3xl font-black text-gray-900 tracking-tight">
-          My Product
-        </h1>
+    <div class="mb-12">
+      <%# Section Header %>
+      <div class="flex items-center justify-between border-b border-gray-100 pb-4 mb-8">
+       <h2 class="text-2xl font-semibold text-gray-900"><%= category.name %></h2>
+
+        <%= link_to "See all", products_path(category: category.name),
+            class: "text-sm font-medium text-[#534AB7] border border-[#534AB7] px-5 py-2 rounded-lg hover:bg-[#534AB7] hover:text-white transition-all duration-200" %>
+      </div>
+
+      <%# Section Product Grid %>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
+        <% category_products.each do |product| %>
+          <div class="group relative bg-white border border-gray-100 rounded-2xl overflow-hidden hover:border-gray-200 hover:-translate-y-0.5 transition-all duration-200 flex flex-col">
+
+            <%= link_to product, class: "absolute inset-0 z-10" do %><% end %>
+
+            <%# Image Wrapper %>
+            <div class="relative w-full bg-gray-50 overflow-hidden" style="aspect-ratio: 4/3">
+              <% img = product.images.first %>
+              <% if img&.image&.attached? %>
+                <%= image_tag img.image, class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" %>
+              <% else %>
+                <div class="w-full h-full flex items-center justify-center">
+                  <svg class="w-10 h-10 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                </div>
+              <% end %>
+              <span class="absolute top-3 left-3 bg-[#EEEDFE] text-[#3C3489] text-xs font-medium px-3 py-1 rounded-full">
+                Digital
+              </span>
+            </div>
+
+            <%# Body Elements %>
+            <div class="p-5 flex flex-col gap-2 flex-1 border-t border-gray-100">
+              <span class="text-xs text-gray-400 font-medium">
+                <%= category.name %>
+              </span>
+
+              <p class="text-xl font-semibold text-gray-900 line-clamp-2 leading-snug group-hover:text-[#534AB7] transition-colors">
+                <%= product.title %>
+              </p>
+
+              <%# Star Ratings — Optimized to minimize database calculation loops %>
+              <div class="flex items-center gap-2 mt-1">
+                <div class="flex gap-0.5">
+                  <% avg_rating = product.reviews.any? ? product.reviews.average(:rating).to_f.round : 0 %>
+                  <% 5.times do |i| %>
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="<%= avg_rating > i ? '#EF9F27' : '#E5E7EB' %>">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                  <% end %>
+                </div>
+                <span class="text-xs text-gray-400">
+                  <%= product.reviews.count %> reviews
+                </span>
+              </div>
+
+              <%# Price & Sales Metrics %>
+              <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
+                <span class="text-lg font-semibold text-gray-900">
+                  <%= number_to_currency(
+                    product.licenses.first&.price,
+                    precision: 2,
+                    strip_insignificant_zeros: true
+                  ) %>
+                </span>
+              </div>
+            </div>
+
+          </div>
+        <% end %>
       </div>
     </div>
   <% end %>
-    
-  <%# Header %>
-  <div class="flex items-center justify-between mb-8">
-    <h1 class="text-2xl font-semibold text-gray-900">Design</h1>
-    <%= link_to "See all", products_path,
-          class: "text-sm font-medium text-[#534AB7] border border-[#534AB7] px-5 py-2 rounded-lg hover:bg-[#534AB7] hover:text-white transition-all" %>
-  </div>
-
-  <%# Grid — 1 col mobile, 2 tablet, 3 desktop, 4 large screen %>
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
-    <% if @products.any? %>
-      <% @products.each do |product| %>
-        <div class="group relative bg-white border border-gray-100 rounded-2xl overflow-hidden hover:border-gray-200 hover:-translate-y-0.5 transition-all duration-200 flex flex-col">
-
-          <%= link_to product, class: "absolute inset-0 z-10" do %><% end %>
-
-          <%# Image %>
-          <div class="relative w-full bg-gray-50 overflow-hidden" style="aspect-ratio: 4/3">
-            <% img = product.images.first %>
-            <% if img&.image&.attached? %>
-              <%= image_tag img.image, class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" %>
-            <% else %>
-              <div class="w-full h-full flex items-center justify-center">
-                <svg class="w-10 h-10 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                </svg>
-              </div>
-            <% end %>
-            <span class="absolute top-3 left-3 bg-[#EEEDFE] text-[#3C3489] text-xs font-medium px-3 py-1 rounded-full">
-              Digital
-            </span>
-          </div>
-
-          <%# Body %>
-          <div class="p-5 flex flex-col gap-2 flex-1 border-t border-gray-100">
-
-            <%# Category %>
-            <span class="text-xs text-gray-400 font-medium">
-              <%= product.category&.name || "Digital" %>
-            </span>
-
-            <%# Title %>
-            <p class="text-xl font-semibold text-gray-900 line-clamp-2 leading-snug group-hover:text-[#534AB7] transition-colors">
-              <%= product.title %>
-            </p>
-
-            <%# Stars %>
-            <div class="flex items-center gap-2 mt-1">
-              <div class="flex gap-0.5">
-                <% 5.times do |i| %>
-                  <% filled = product.reviews.any? ? (product.reviews.average(:rating)&.round || 0) > i : false %>
-                  <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="<%= filled ? '#EF9F27' : '#E5E7EB' %>">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                  </svg>
-                <% end %>
-              </div>
-              <span class="text-xs text-gray-400">
-                <%= product.reviews.count %> reviews
-              </span>
-            </div>
-
-            <%# Price %>
-            
-            <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
-              <span class="text-lg font-semibold text-gray-900">
-                <%= number_to_currency(
-                  product.licenses.first&.price,
-                  precision: 2,
-                  strip_insignificant_zeros: true
-                ) %>
-              </span>
-              <span class="text-[11px] text-gray-400">
-                <%# <%= product.orders.count %> sales 
-              </span>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    <% else %>
-      <div class="col-span-full text-center py-20 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
-        <p class="text-base text-gray-400">No products yet.</p>
-      </div>
-    <% end %>
-  </div>
 </div>

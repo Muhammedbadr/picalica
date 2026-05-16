@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :products do
-    # resources :categories
+    
     resources :texts
     resources :lists do
       resources :list_tags
@@ -14,6 +14,9 @@ Rails.application.routes.draw do
     member do
       get :step_two           # لعرض صفحة الصور والملفات
       patch :update_step_two    # لحفظ بيانات الصفحة الثانية
+    end
+    collection do
+      get :my_product
     end
   end
   # resources :users do
