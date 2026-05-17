@@ -29,24 +29,25 @@
 
     <%# 3. Modernized "Pill" Search Bar %>
     <div class="max-w-2xl mx-auto">
-      <%= search_form_for @q, url: products_path, method: :get do |f| %>
-        <div class="flex items-center bg-white/95 backdrop-blur-sm rounded-[2rem] p-1 shadow-[0_20px_50px_rgba(0,0,0,0.4)] transition-all duration-300 focus-within:ring-[12px] focus-within:ring-indigo-500/10">
+  <%= form_with url: products_path, method: :get, 
+      html: { onsubmit: "if(!this.querySelector('input[name=q]').value.trim()) return false;" } do |f| %>
+    <div class="flex items-center bg-white/95 backdrop-blur-sm rounded-[2rem] p-1 shadow-[0_20px_50px_rgba(0,0,0,0.4)] transition-all duration-300 focus-within:ring-[12px] focus-within:ring-indigo-500/10">
 
-          <div class="pl-6 text-gray-400 hidden sm:block">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
-          </div>
+      <div class="pl-6 text-gray-400 hidden sm:block">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+      </div>
 
-          <%= f.search_field :title_or_subcategory_name_or_subcategory_category_name_or_tags_name_cont,
-            placeholder: "Search products, categories, subcategories...",
-            class: "w-full border-none focus:outline-none focus:ring-0 text-left px-4 md:px-6 py-4 text-gray-800 text-lg font-bold placeholder-gray-400 bg-transparent" %>
+      <input type="text" name="q" value="<%= params[:q] %>"
+        placeholder="Search products, categories, subcategories..."
+        class="w-full border-none focus:outline-none focus:ring-0 text-left px-4 md:px-6 py-4 text-gray-800 text-lg font-bold placeholder-gray-400 bg-transparent">
 
-          <button type="submit" class="bg-[#5D5899] hover:bg-[#4d4885] hover:-translate-y-0.5 active:translate-y-0 text-white px-10 py-4 rounded-[1.7rem] font-black text-sm uppercase tracking-widest transition-all shadow-lg hover:shadow-indigo-500/30">
-            Search
-          </button>
-  
-        </div>
-      <% end %>
+      <button type="submit" class="bg-[#5D5899] hover:bg-[#4d4885] hover:-translate-y-0.5 active:translate-y-0 text-white px-10 py-4 rounded-[1.7rem] font-black text-sm uppercase tracking-widest transition-all shadow-lg hover:shadow-indigo-500/30">
+        Search
+      </button>
+
     </div>
+  <% end %>
+</div>
   </div>

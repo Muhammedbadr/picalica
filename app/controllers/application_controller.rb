@@ -14,6 +14,6 @@ class ApplicationController < ActionController::Base
   private
 
   def set_nav_categories
-    @nav_categories = Category.includes(:subcategories).all
+    @nav_categories = Category.includes(:subcategories, :products).all
   end
 end

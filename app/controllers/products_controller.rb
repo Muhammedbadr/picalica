@@ -4,22 +4,20 @@ class ProductsController < ApplicationController
   before_action :set_categories, only: [ :new, :create, :edit, :update ]  # ← add this
 
   def index
-    @user = current_user
-    
-    # 1. Always load categories for the view sidebar/grid to prevent nil errors
-    @categories = Category.includes(:products) 
-
     if params[:subcategory].present?
-      # Note: Ensure @products is initialized before calling .joins on it
-      @products = Product.joins(:subcategory).where(subcategories: { name: params[:subcategory] })
+      @products = Product.joins(:subcategory)
+                        .where(subcategories: { name: params[:subcategory] })
     elsif params[:category].present?
       @category = Category.find_by(name: params[:category])
       @products = @category ? @category.products : Product.none
-      
-    else
-      @q = Product.ransack(params[:q])
+    elsif params[:q].present?
+      @q = Product.ransack(
+        title_or_subcategory_name_or_subcategory_category_name_or_tags_name_cont: params[:q]
+      )
       @products = @q.result(distinct: true)
-    end 
+    else
+      @products = Product.all 
+    end
   end
 
   def my_product
