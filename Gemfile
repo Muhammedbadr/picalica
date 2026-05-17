@@ -70,8 +70,9 @@ end
 gem "devise", "~> 5.0" 
 gem "stripe", "~> 19.0"
 gem 'active_storage_validations'
-gem "mini_magick"
 gem 'client_side_validations'
+gem 'mini_magick'
+
 
 
 gem "ransack", "~> 4.4"

@@ -4,8 +4,13 @@
 
   <div class="relative w-full bg-gray-50 overflow-hidden" style="aspect-ratio: 4/3">
     <% img = product.images.first %>
+    <%# 1. Force Rails to analyze the file right before rendering if metadata is still blank %>
     <% if img&.image&.attached? %>
-      <%= image_tag img.image, class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" %>
+      <% img.image.analyze unless img.image.analyzed? %>
+      
+      <%= image_tag img.image, 
+                    class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500", 
+                    loading: "lazy" %>
     <% else %>
       <div class="w-full h-full flex items-center justify-center">
         <svg class="w-10 h-10 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
@@ -13,6 +18,7 @@
         </svg>
       </div>
     <% end %>
+
     <span class="absolute top-3 left-3 bg-[#EEEDFE] text-[#3C3489] text-xs font-medium px-3 py-1 rounded-full">
         <%= label %>
     </span>

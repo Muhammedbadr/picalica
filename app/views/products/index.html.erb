@@ -35,7 +35,6 @@
     <% @nav_categories.each do |category| %>
       <% category_products = category.products.limit(4) %>
       <% next unless category_products.any? %>
-
       <div class="mb-12">
         <div class="flex items-center justify-between border-b border-gray-100 pb-4 mb-8">
           <h2 class="text-2xl font-semibold text-gray-900"><%= category.name %></h2>
@@ -48,6 +47,7 @@
               <%= render "products/product_card", product: product, label: category.name %>          <% end %>
         </div>
       </div>
+      
     <% end %>
   <% end %>
 

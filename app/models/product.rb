@@ -6,6 +6,7 @@ class Product < ApplicationRecord
   validates :description, presence: true
   validates_associated :licenses
   validates_associated :texts, :feature_sections
+  # validates_associated :images
   # 2. This ensures that IF there is a title, it starts with a capital letter
   validates :title, format: {
     with: /\A[A-Z]/,
