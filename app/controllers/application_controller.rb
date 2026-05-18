@@ -1,7 +1,8 @@
 class ApplicationController < ActionController::Base
   allow_browser versions: :modern
   before_action :set_nav_categories
-
+  # before_action :set_render_cart
+  # before_action :initialize_cart 
   stale_when_importmap_changes
 
   protected
@@ -12,7 +13,17 @@ class ApplicationController < ActionController::Base
   end
 
   private
+  # def set_render_cart
+  #   @render_cart = false
+  # end
+  # def initialize_cart
+  #   @cart ||= Cart.find_by(id: session[:cart_id])
 
+  #   if @cart.nil?
+  #     @cart = Cart.create
+  #     session[:cart_id] = @cart.id
+  #   end
+  # end
   def set_nav_categories
     @nav_categories = Category.includes(:subcategories, :products).all
   end

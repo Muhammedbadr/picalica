@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get "cart_items/create"
+  get "cart_items/update"
+  get "cart_items/destroy"
+  get "carts/index"
   resources :products do
     
     resources :texts
@@ -27,8 +31,10 @@ Rails.application.routes.draw do
       # sessions: 'users/sessions'
     }
 
+    post 'cart/add', to: 'cart_items#create', as: :cart_add
   resources :users
-
+  resource :cart
+  resources :cart_items, only: [:create, :destroy]
    root to: "home#index"
    get "tags/:tag", to: "products#index", as: :tag
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

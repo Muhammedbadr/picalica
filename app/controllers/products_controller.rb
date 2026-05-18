@@ -4,6 +4,7 @@ class ProductsController < ApplicationController
   before_action :set_categories, only: [ :new, :create, :edit, :update ]  # ← add this
 
   def index
+    
     if params[:subcategory].present?
       @products = Product.joins(:subcategory)
                         .where(subcategories: { name: params[:subcategory] })
@@ -26,6 +27,7 @@ class ProductsController < ApplicationController
   def show
   end
 
+  
   def edit
     @product = Product.find(params[:id])
     @step = params[:step] || "1"

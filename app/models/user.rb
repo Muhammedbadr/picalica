@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :user_roles
   belongs_to :role, optional: true
   has_many :products 
+  has_one :cart, dependent: :destroy
   has_many :reviews, dependent: :destroy
   has_one_attached :avatar
   # has_one :images

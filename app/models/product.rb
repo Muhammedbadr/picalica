@@ -24,6 +24,7 @@ class Product < ApplicationRecord
   has_many :product_tags, dependent: :destroy
   has_many :tags, through: :product_tags
   has_many :cart_items, dependent: :destroy
+  has_many :carts, through: :cart_items
   has_many :reviews, dependent: :destroy
   has_many :images, dependent: :destroy
   has_many :videos, dependent: :destroy

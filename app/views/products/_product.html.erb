@@ -1,5 +1,4 @@
-<div id="<%= dom_id product %>" class="w-full sm:w-auto my-5 space-y-5 p-6 bg-white shadow rounded-lg">
-  
+c  
     
    <%# ── Hero cover: images[0] has a single :image attached ── %>
   <% hero = product.images.first %>
@@ -16,12 +15,12 @@
     <% end %>
   <% end %>
 
- <% @product.texts.each do |text| %>
-  <div class="text-block">
-    <p><strong><%= text.title %></strong></p>
-    <p><%= text.description %></p>
-  </div>
-<% end %>
+  <% @product.texts.each do |text| %>
+    <div class="text-block">
+      <p><strong><%= text.title %></strong></p>
+      <p><%= text.description %></p>
+    </div>
+  <%end%>
 
   <%# category %>
   <% if @product.subcategory %>
@@ -75,21 +74,21 @@
   <% end %>
   
   <% @product.feature_sections.each do |section| %>
-  <div class="feature-block mb-8">
-    <h2 class="text-2xl font-bold text-[#5D5899] mb-4">
-      <%= section.title %>
-    </h2>
+    <div class="feature-block mb-8">
+      <h2 class="text-2xl font-bold text-[#5D5899] mb-4">
+        <%= section.title %>
+      </h2>
 
-    <div class="items-list space-y-4">
-      <% section.feature_items.each do |item| %>
-        <div class="item pl-4 border-l-2 border-gray-200">
-          <h4 class="font-bold"><%= item.item_title %></h4>
-          <p class="text-gray-500"><%= item.description %></p>
-        </div>
-      <% end %>
+      <div class="items-list space-y-4">
+        <% section.feature_items.each do |item| %>
+          <div class="item pl-4 border-l-2 border-gray-200">
+            <h4 class="font-bold"><%= item.item_title %></h4>
+            <p class="text-gray-500"><%= item.description %></p>
+          </div>
+        <% end %>
+      </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
   <div>
     <strong class="block font-medium mb-1">Version:</strong>
     <%= product.issue_number %>
@@ -105,12 +104,11 @@
     <div class="text-sm">
       <span><%= license.title_name %></span> -
       <span class="font-bold">
-        <span class="font-bold">
-          <%= number_to_currency(
-            license.price,
-            precision: 2,
-            strip_insignificant_zeros: true
-          ) %>
+        <%= number_to_currency(
+          license.price,
+          precision: 2,
+          strip_insignificant_zeros: true
+        ) %>
       </span>
     </div>
   <% end %>
@@ -125,4 +123,10 @@
     <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded">Exclusive</span>
   <% end %>
 
+  <%# app/views/products/_product.html.erb %>
+  <%= form_with(url: cart_add_path, data: { turbo_frame: "_top" }) do |f| %>
+    <%= f.hidden_field :id, value: product.id %>
+    <%= f.submit "add to cart" %>
+  <% end %>
+  
 
