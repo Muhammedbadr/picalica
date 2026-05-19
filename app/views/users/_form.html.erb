@@ -2,9 +2,18 @@
 <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-10 px-4">
   <div class="max-w-4xl mx-auto space-y-6">
     
-    <%= form_with(model: @user, local: true, class: "space-y-6") do |f| %>
+    <%= form_with(model: @user, local: true, validate: true, class: "space-y-6") do |f| %>
       
       <%# ── MAIN EDIT CARD ── %>
+      <% if @user.errors.any? %>
+          <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-xl">
+            <ul class="text-xs font-black text-red-700 uppercase tracking-widest list-none">
+              <% @user.errors.full_messages.each do |msg| %>
+                <li>⚠️ <%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
       <div class="bg-white rounded-3xl border border-gray-200 shadow-xl overflow-hidden">
         
         <%# Enhanced Cover with Pattern %>

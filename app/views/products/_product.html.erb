@@ -124,9 +124,10 @@ c
   <% end %>
 
   <%# app/views/products/_product.html.erb %>
-  <%= form_with(url: cart_add_path, data: { turbo_frame: "_top" }) do |f| %>
-    <%= f.hidden_field :id, value: product.id %>
-    <%= f.submit "add to cart" %>
+  <% if current_user && !current_user.owns_product?(@product) %>
+    <%= form_with(url: cart_add_path, data: { turbo_frame: "_top" }) do |f| %>
+      <%= f.hidden_field :id, value: @product.id %>
+      <%= f.submit "Add to Cart" %>
+    <% end %>
   <% end %>
-  
 

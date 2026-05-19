@@ -1,11 +1,12 @@
 class Product < ApplicationRecord
-  # before_action :authenticate_user!
-
+  
   # validates
   validates :title, presence: true
   validates :description, presence: true
   validates_associated :licenses
   validates_associated :texts, :feature_sections
+  validate :user_must_have_name
+  validate :user_must_have_phone_number
   # validates_associated :images
   # 2. This ensures that IF there is a title, it starts with a capital letter
   validates :title, format: {
@@ -58,4 +59,16 @@ class Product < ApplicationRecord
   end
 
   # This allows filtering like: Product.tagged_with("online store")
+  private 
+  def user_must_have_name
+    if user.nil? || user.name.blank?
+      errors.add(:base, "You must fill out your name before creating a product.")
+    end
+  end
+  def ensure_user_have_phone_number
+    if user.nil? || user.phone_number.blank?
+      errors.add(:base, "You must fill out your phone_number before creating a product.")
+    end
+  end
+  
 end

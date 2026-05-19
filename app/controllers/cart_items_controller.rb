@@ -4,18 +4,18 @@ class CartItemsController < ApplicationController
     product = Product.find(params[:id]) # Form passes :id
 
     # If the product is already in the cart, skip adding and warn the user
-    if @cart.products.include?(product)
-      redirect_to cart_path, alert: "This item is already in your cart!"
-      return
-    end
+      if @cart.products.include?(product)
+        redirect_to product_path(product), alert: "Already in your cart!"
+        return
+      end
 
-    @cart_item = @cart.add_product(product.id)
+      @cart_item = @cart.add_product(product.id)
 
-    if @cart_item.save
-      redirect_to cart_path, notice: 'Product added to cart.'
-    else
-      redirect_back fallback_location: root_path, alert: 'Unable to add item.'
-    end
+      if @cart_item.save
+        redirect_to product_path(product), notice: "Added to cart!"
+      else
+        redirect_to product_path(product), alert: "Unable to add item."
+      end
   end
   
 

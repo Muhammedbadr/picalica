@@ -2,6 +2,8 @@ class ProductsController < ApplicationController
   before_action :set_product, only: [ :show, :edit, :update, :destroy, :step_two, :update_step_two ]
   before_action :authorize_owner!, only: [ :edit, :update, :destroy ]
   before_action :set_categories, only: [ :new, :create, :edit, :update ]  # ← add this
+  # before_action :ensure_user_has_name, only: [:new, :create]
+  # before_action :ensure_user_has_phone_number, only: [:new, :create]
 
   def index
     
@@ -36,6 +38,7 @@ class ProductsController < ApplicationController
     @product.images.build        if @product.images.empty?
     @product.build_feature_sections if @product.feature_sections.nil?
     # REMOVED the wrong lines
+    
   end
 
   def new

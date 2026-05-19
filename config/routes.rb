@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get "cart_items/create"
   get "cart_items/update"
   get "cart_items/destroy"
+  
   get "carts/index"
   resources :products do
     
