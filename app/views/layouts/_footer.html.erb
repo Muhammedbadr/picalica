@@ -1,0 +1,116 @@
+<footer class="bg-[#f8f7ff] text-gray-600" style="font-family:'Cairo',sans-serif; border-top: 1px solid #e8e6f5;">
+
+  <%# ── MAIN GRID ── %>
+  <div class="max-w-7xl mx-auto px-8 pt-14 pb-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+
+      <%# ── BRAND COLUMN ── %>
+      <div class="md:col-span-1">
+        <p class="text-[#5D5899] text-2xl font-black tracking-tight mb-2">Picalica</p>
+        <p class="text-gray-400 text-sm leading-relaxed mb-5">
+          The marketplace for premium digital<br class="hidden md:block">
+          products — themes, templates & more.
+        </p>
+
+        <%# Status badge %>
+        <div class="inline-flex items-center gap-2 bg-white border border-[#e8e6f5] rounded-full px-3 py-1.5 mb-5 shadow-sm">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0"></span>
+          <span class="text-[11px] text-gray-400">All systems operational</span>
+        </div>
+
+        <%# Social icons %>
+        <div class="flex gap-2.5 mb-7">
+          <% [
+            { icon: "ti-brand-facebook", label: "Facebook",  href: "#" },
+            { icon: "ti-brand-x",        label: "X",         href: "#" },
+            { icon: "ti-brand-instagram",label: "Instagram", href: "#" },
+            { icon: "ti-brand-linkedin", label: "LinkedIn",  href: "#" }
+          ].each do |s| %>
+            <a href="<%= s[:href] %>"
+               aria-label="<%= s[:label] %>"
+               class="w-9 h-9 rounded-[10px] flex items-center justify-center border border-[#e8e6f5] bg-white text-[#5D5899] hover:bg-[#5D5899] hover:text-white hover:border-[#5D5899] transition-all duration-200 text-[17px] shadow-sm">
+              <i class="ti <%= s[:icon] %>" aria-hidden="true"></i>
+            </a>
+          <% end %>
+        </div>
+
+        <%# Payment methods %>
+        <p class="text-[10px] font-black text-[#5D5899] uppercase tracking-[0.15em] mb-3">Accepted payments</p>
+        <div class="flex gap-2 flex-wrap">
+          <% ["VISA", "MC", "PayPal", "Stripe"].each do |pm| %>
+            <span class="px-3 py-1 rounded-lg border border-[#e8e6f5] bg-white text-[11px] font-black text-[#5D5899] tracking-wide shadow-sm">
+              <%= pm %>
+            </span>
+          <% end %>
+        </div>
+      </div>
+
+      <%# ── PICALICA COLUMN ── %>
+      <div>
+        <p class="text-[10px] font-black text-[#5D5899] uppercase tracking-[0.15em] mb-4">Picalica</p>
+        <nav class="space-y-2.5">
+          <% [
+            ["About Picalica",       "#"],
+            ["How it works",         "#"],
+            ["FAQ",                  "#"],
+            ["Licenses",             "#"],
+            ["Copyright protection", "#"],
+            ["Terms of use",         "#"],
+            ["Privacy policy",       "#"]
+          ].each do |label, path| %>
+            <%= link_to label, path,
+                class: "block text-[13.5px] text-gray-400 hover:text-[#5D5899] transition-colors duration-150" %>
+          <% end %>
+        </nav>
+      </div>
+
+      <%# ── SELL COLUMN ── %>
+      <div>
+        <p class="text-[10px] font-black text-[#5D5899] uppercase tracking-[0.15em] mb-4">Sell on Picalica</p>
+        <nav class="space-y-2.5">
+          <% [
+            ["Seller guidelines",  "#"],
+            ["Become a seller",    "#"],
+            ["Seller dashboard",   "#"],
+            ["Earnings & payouts", "#"]
+          ].each do |label, path| %>
+            <%= link_to label, path,
+                class: "block text-[13.5px] text-gray-400 hover:text-[#5D5899] transition-colors duration-150" %>
+          <% end %>
+        </nav>
+      </div>
+
+      <%# ── RESOURCES COLUMN ── %>
+      <div>
+        <p class="text-[10px] font-black text-[#5D5899] uppercase tracking-[0.15em] mb-4">Resources</p>
+        <nav class="space-y-2.5">
+          <% [
+            ["Picalica community", "#"],
+            ["Picalica blog",      "#"],
+            ["Help center",        "#"],
+            ["API docs",           "#"],
+            ["Changelog",          "#"]
+          ].each do |label, path| %>
+            <%= link_to label, path,
+                class: "block text-[13.5px] text-gray-400 hover:text-[#5D5899] transition-colors duration-150" %>
+          <% end %>
+        </nav>
+      </div>
+
+    </div>
+  </div>
+
+  <%# ── BOTTOM BAR ── %>
+  <div class="border-t border-[#e8e6f5]">
+    <div class="max-w-7xl mx-auto px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <span class="text-[12px] text-gray-400">© <%= Time.current.year %> Picalica. All rights reserved.</span>
+      <div class="flex items-center gap-5">
+        <% [["Privacy", "#"], ["Terms", "#"], ["Cookies", "#"], ["Sitemap", "#"]].each do |label, path| %>
+          <%= link_to label, path,
+              class: "text-[12px] text-gray-400 hover:text-[#5D5899] transition-colors duration-150" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+</footer>
