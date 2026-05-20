@@ -9,6 +9,9 @@ class CartsController < ApplicationController
   end 
 
   
+  def pay
+    @cart = current_user.cart
+  end
 
   
 end

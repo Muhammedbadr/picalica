@@ -34,7 +34,11 @@ Rails.application.routes.draw do
 
     post 'cart/add', to: 'cart_items#create', as: :cart_add
   resources :users
-  resource :cart
+  resource :cart, only: [:show] do
+    get  :pay
+    post :charge
+  end
+  
   resources :cart_items, only: [:create, :destroy]
    root to: "home#index"
    get "tags/:tag", to: "products#index", as: :tag
