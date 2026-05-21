@@ -16,6 +16,10 @@ class Cart < ApplicationRecord
     item = cart_items.find_by(product_id: product_id)
     item&.destroy # The ampersand prevents an error if the item was already deleted
   end
+
+  def total_items_count
+    cart_items.count
+  end
  
   def total
     # Sum up the price of the first license for every product in the cart

@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
+  get "orders/index"
+  get "orders/show"
+  get "orders/new"
   get "cart_items/create"
   get "cart_items/update"
   get "cart_items/destroy"
   
   get "carts/index"
   resources :products do
-    
     resources :texts
     resources :lists do
       resources :list_tags
@@ -24,15 +26,14 @@ Rails.application.routes.draw do
       get :my_product
     end
   end
-  # resources :users do
-  #   resources :profiles
-  # end
+  
+  
   resources :roles
-  devise_for :users, controllers: {
-      # sessions: 'users/sessions'
-    }
-
-    post 'cart/add', to: 'cart_items#create', as: :cart_add
+  devise_for :users
+  resources :orders do
+    resources :order_items
+  end
+  post 'cart/add', to: 'cart_items#create', as: :cart_add
   resources :users
   resource :cart, only: [:show] do
     get  :pay

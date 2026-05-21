@@ -41,9 +41,14 @@
     <header>
       <%= render 'layouts/header' %>
     </header>
-    <main>
+    <main >
         <%= render 'layouts/alert' %>
     </main>
-     <%= yield %>
+    <section class="mb-12">
+      <%= yield %>
+    </section>
+     <footer >
+        <%= render "layouts/footer" %>
+    </footer>
   </body>
 </html>
