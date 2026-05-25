@@ -34,7 +34,7 @@
         </svg>
       </div>
       <div>
-        <h1 class="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">Your Cart</h1>
+        <h1 class="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">Your Order</h1>
         <% if @order&.order_items&.any? %>
           <p class="text-sm text-gray-500 mt-1">
             <%= pluralize(@order.order_items.count, 'item') %> in your cart

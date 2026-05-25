@@ -91,14 +91,12 @@
           </div>
 
           <%# Checkout Button %>
-          <%= link_to pay_cart_path,
+              <%= link_to "Proceed to Checkout →", pay_cart_path,
                 data: { turbo_frame: "_top" },
                 class: "block w-full text-center px-6 sm:px-8 py-4 bg-[#79C343] text-white rounded-[1.25rem]
-                        font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-green-100
-                        hover:bg-[#6ab038] hover:scale-[1.02] active:scale-95 transition-all" do %>
-            Proceed to Checkout →
-          <% end %>
-
+                font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-green-100
+                hover:bg-[#6ab038] hover:scale-[1.02] active:scale-95 transition-all" %>
+                 
           <%# Continue Shopping %>
           <div class="text-center pt-1">
             <%= link_to "← Continue Shopping", root_path,

@@ -15,7 +15,6 @@ Rails.application.routes.draw do
     resources :product_files
     resources :views
     resources :images
-    resources :payments
     resources :licenses
     resources :tags, only: [ :index, :create, :destroy ]
     member do
@@ -39,6 +38,7 @@ Rails.application.routes.draw do
     get  :pay
     post :charge
   end
+  resources :payments, only: :new
   
   resources :cart_items, only: [:create, :destroy]
    root to: "home#index"

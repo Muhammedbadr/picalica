@@ -1,31 +1,63 @@
 class PaymentsController < ApplicationController
-  def create
-    # Use params[:product_id] if your route is nested
-    product = Product.find(params[:product_id])
+  before_action :set_product
+  before_action :verify_product_license, only: :new
 
-    # For now, let's use a temporary price since we are still setting up Licenses
-    # Stripe needs an Integer in CENTS ($20.00 = 2000)
-    test_price = 2000 
+  def new
+    set_checkout_session
+  rescue Stripe::InvalidRequestError, Stripe::AuthenticationError => e
+    flash[:alert] = "Payment error: #{e.message}"
+    redirect_to root_url
+  end
 
-    @session = Stripe::Checkout::Session.create({
-      payment_method_types: ['card'],
-      line_items: [{
-        price_data: {
-          currency: 'usd',
-          unit_amount: test_price, 
-          product_data: {
-            name: product.title, # Matches your 'title' column
-          },
-        },
-        quantity: 1,
-      }],
-      mode: "payment",
-      success_url: root_url,
-      cancel_url: root_url,
-    })
+  private
 
-    respond_to do |format|
-      format.js # This looks for create.js.erb
+  def set_product
+    @product = Product.find(params[:product_id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to root_url, alert: "Product not found"
+  end
+
+  def verify_product_license
+    unless @product.license&.stripe_price_id.present?
+      redirect_to root_url, alert: "Product license not configured for payment"
     end
   end
+
+  def set_checkout_session
+    @checkout_session = Stripe::Checkout::Session.create({
+      payment_method_types: [ "card" ],
+      mode: "payment",
+      line_items: [ {
+        price: @product.license.stripe_price_id,
+        quantity: 1
+      } ],
+      metadata: {
+        product_id: @product.id
+      },
+      success_url: pay_cart_url,
+      cancel_url: root_url
+    })
+  end
 end
+
+# def create
+#     # Use params[:product_id] if your route is nested
+#     @product = Product.find(params[:product_id])
+#     @user = Stripe::Customer.create({
+#       email: params[:email],
+#       name: params[:name],
+#     })
+#     # For now, let's use a temporary price since we are still setting up Licenses
+#     # Stripe needs an Integer in CENTS ($20.00 = 2000)
+#     # test_price = 2000
+
+#     payment_intent = Stripe::PaymentIntent.create({
+#       amount: params[:amount], # Amount in cents (e.g., $10.00 = 1000)
+#       currency: 'usd',
+#       payment_method_types: ['card'],
+#     })
+
+#     render json: {
+#       client_secret: payment_intent.client_secret,
+#     }
+#   end

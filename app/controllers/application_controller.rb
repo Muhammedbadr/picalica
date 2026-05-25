@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   allow_browser versions: :modern
   before_action :set_nav_categories
+  # before_action :authenticate_user!
   before_action :set_current_cart, if: :user_signed_in?
   # before_action :set_render_cart
   # before_action :initialize_cart
