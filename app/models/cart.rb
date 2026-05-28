@@ -7,7 +7,7 @@ class Cart < ApplicationRecord
   def add_product(product_id)
     # Check if this product is already in the cart items collection
     current_item = cart_items.find_by(product_id: product_id)
-    
+
     # If it's not in the cart, create a new record. If it is, return it as-is.
     current_item ||= cart_items.build(product_id: product_id)
   end
@@ -20,9 +20,17 @@ class Cart < ApplicationRecord
   def total_items_count
     cart_items.count
   end
- 
+
   def total
-    # Sum up the price of the first license for every product in the cart
-    cart_items.to_a.sum { |item| item.product.licenses.first&.price.to_f }
+    cart_items.to_a.sum { |item| item.license&.price.to_f || item.product.licenses.first&.price.to_f }
+  end
+  def ready_for_checkout?
+    cart_items.all? { |item| item.license&.price.present? || item.product.licenses.first&.price.present? }
+  end
+
+  def misconfigured_products
+    cart_items
+      .select { |item| item.license&.price.blank? && item.product.licenses.first&.price.blank? }
+      .map { |item| item.product.title }
   end
 end

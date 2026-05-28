@@ -3,13 +3,14 @@ class CartItemsController < ApplicationController
     @cart = current_user.cart || current_user.create_cart
     product = Product.find(params[:id]) # Form passes :id
 
-    # If the product is already in the cart, skip adding and warn the user
+      # If the product is already in the cart, skip adding and warn the user
       if @cart.products.include?(product)
         redirect_to product_path(product), alert: "Already in your cart!"
         return
       end
 
       @cart_item = @cart.add_product(product.id)
+      @cart_item.license_id = params[:selected_license_id]
 
       if @cart_item.save
         redirect_to product_path(product), notice: "Added to cart!"
@@ -17,12 +18,12 @@ class CartItemsController < ApplicationController
         redirect_to product_path(product), alert: "Unable to add item."
       end
   end
-  
+
 
   def destroy
     # 1. Find the cart item belonging strictly to the logged-in user's cart
     @cart_item = current_user.cart.cart_items.find(params[:id])
-    
+
     # 2. Destroy the join record
     @cart_item.destroy
 

@@ -1,5 +1,4 @@
 class Product < ApplicationRecord
-  
   # validates
   validates :title, presence: true
   validates :description, presence: true
@@ -16,11 +15,11 @@ class Product < ApplicationRecord
 
   # product belongs_to
   belongs_to :user
-  belongs_to :subcategory 
+  belongs_to :subcategory
   # has_one
   has_many :feature_sections, dependent: :destroy  # Optional: helper to get the parent category directly
-  
-  delegate :category, to: :subcategory, allow_nil: true 
+
+  delegate :category, to: :subcategory, allow_nil: true
   # has_many
   has_many :product_tags, dependent: :destroy
   has_many :tags, through: :product_tags
@@ -33,7 +32,11 @@ class Product < ApplicationRecord
   has_many :lists, dependent: :destroy
   has_many :licenses, dependent: :destroy
   has_many :product_files, dependent: :destroy
-  
+
+  def license
+    licenses.first
+  end
+
   # accepts_nested_attributes
   accepts_nested_attributes_for :feature_sections, allow_destroy: true
   accepts_nested_attributes_for :images, allow_destroy: true
@@ -48,27 +51,27 @@ class Product < ApplicationRecord
     images.image.variant(resize: [ 300, 300 ]).processed
   end
 
-  
+
 
   def self.ransackable_attributes(auth_object = nil)
-    ["title"]
+    [ "title" ]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["subcategory", "category", "tags"]
+    [ "subcategory", "category", "tags" ]
   end
 
   # This allows filtering like: Product.tagged_with("online store")
-  private 
+  private
   def user_must_have_name
     if user.nil? || user.name.blank?
       errors.add(:base, "You must fill out your name before creating a product.")
     end
   end
-  def ensure_user_have_phone_number
+
+  def user_must_have_phone_number
     if user.nil? || user.phone_number.blank?
       errors.add(:base, "You must fill out your phone_number before creating a product.")
     end
   end
-  
 end

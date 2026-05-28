@@ -14,6 +14,7 @@ export default class extends Controller {
   handleCheckout(e) {
     e.preventDefault()
     const button = e.currentTarget
+    const originalText = button.textContent
     button.disabled = true
     button.textContent = 'Processing...'
 
@@ -23,7 +24,7 @@ export default class extends Controller {
       if (result.error) {
         console.error('Stripe Checkout error:', result.error.message)
         button.disabled = false
-        button.textContent = 'Pay ' + button.textContent.split(' ').pop() + ' Now →'
+        button.textContent = originalText
       }
     })
   }

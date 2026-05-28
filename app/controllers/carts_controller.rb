@@ -8,6 +8,7 @@ class CartsController < ApplicationController
 
   def pay
     create_checkout_session
+    redirect_to @checkout_session.url, allow_other_host: true
   rescue Stripe::InvalidRequestError, Stripe::AuthenticationError => e
     flash[:alert] = "Payment error: #{e.message}"
     redirect_to cart_path
@@ -25,17 +26,23 @@ class CartsController < ApplicationController
       product = item.product
       license = item.respond_to?(:license) ? item.license : product.licenses.first
 
-      unless license&.stripe_price_id.present?
-        raise Stripe::InvalidRequestError.new("Product '#{product.title}' is not configured for payment")
+      unless license&.price.present?
+        raise Stripe::InvalidRequestError.new("Product '#{product.title}' is not configured for payment", "price")
       end
 
       {
-        price: license.stripe_price_id,
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: "#{product.title} — #{license.title_name}"
+          },
+          unit_amount: (license.price.to_f * 100).to_i
+        },
         quantity: 1
       }
     end
 
-    @checkout_session = Stripe::Checkout::Session.create({
+      @checkout_session = Stripe::Checkout::Session.create({
       payment_method_types: [ "card" ],
       mode: "payment",
       line_items: line_items,
@@ -43,8 +50,8 @@ class CartsController < ApplicationController
         cart_id: @cart.id,
         user_id: current_user.id
       },
-      success_url: pay_cart_url,
-      cancel_url: cart_path
+      success_url: cart_url,
+      cancel_url: cart_url
     })
   end
 end

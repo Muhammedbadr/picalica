@@ -91,11 +91,22 @@
           </div>
 
           <%# Checkout Button %>
-              <%= link_to "Proceed to Checkout →", pay_cart_path,
-                data: { turbo_frame: "_top" },
-                class: "block w-full text-center px-6 sm:px-8 py-4 bg-[#79C343] text-white rounded-[1.25rem]
-                font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-green-100
-                hover:bg-[#6ab038] hover:scale-[1.02] active:scale-95 transition-all" %>
+          <% if @cart.ready_for_checkout? %>
+            <%= link_to "Proceed to Checkout →", pay_cart_path,
+              data: { turbo_frame: "_top" },
+              class: "block w-full text-center px-6 sm:px-8 py-4 bg-[#79C343] text-white rounded-[1.25rem]
+              font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-green-100
+              hover:bg-[#6ab038] hover:scale-[1.02] active:scale-95 transition-all" %>
+          <% else %>
+            <div class="rounded-[1.25rem] border border-[#FBBF24]/30 bg-[#FEF3C7] px-6 py-4 text-left text-sm font-semibold text-[#92400E]">
+              Some products are not configured for Stripe payment:
+              <span class="font-bold text-[#92400E]"><%= @cart.misconfigured_products.to_sentence %></span>
+            </div>
+            <div class="block w-full text-center px-6 sm:px-8 py-4 bg-gray-300 text-gray-600 rounded-[1.25rem]
+                font-black text-xs uppercase tracking-[0.2em] shadow-inner transition-all cursor-not-allowed">
+              Proceed to Checkout →
+            </div>
+          <% end %>
                  
           <%# Continue Shopping %>
           <div class="text-center pt-1">

@@ -6,7 +6,6 @@ class ProductsController < ApplicationController
   # before_action :ensure_user_has_phone_number, only: [:new, :create]
 
   def index
-    
     if params[:subcategory].present?
       @products = Product.joins(:subcategory)
                         .where(subcategories: { name: params[:subcategory] })
@@ -19,7 +18,7 @@ class ProductsController < ApplicationController
       )
       @products = @q.result(distinct: true)
     else
-      @products = Product.all 
+      @products = Product.all
     end
   end
 
@@ -29,7 +28,7 @@ class ProductsController < ApplicationController
   def show
   end
 
-  
+
   def edit
     @product = Product.find(params[:id])
     @step = params[:step] || "1"
@@ -38,7 +37,6 @@ class ProductsController < ApplicationController
     @product.images.build        if @product.images.empty?
     @product.build_feature_sections if @product.feature_sections.nil?
     # REMOVED the wrong lines
-    
   end
 
   def new

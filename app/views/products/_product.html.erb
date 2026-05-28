@@ -99,19 +99,6 @@ c
     <%= product.description %>
   <%# </div> %>
 
-  <%# IMPORTANT: Check if you added the price column yet! %>
-  <% product.licenses.each do |license| %>
-    <div class="text-sm">
-      <span><%= license.title_name %></span> -
-      <span class="font-bold">
-        <%= number_to_currency(
-          license.price,
-          precision: 2,
-          strip_insignificant_zeros: true
-        ) %>
-      </span>
-    </div>
-  <% end %>
   <%# Displaying the User's email instead of just a boring ID number %>
   <div>
     <strong class="block font-medium mb-1">Posted By:</strong>
@@ -127,6 +114,22 @@ c
   <% if current_user && !current_user.owns_product?(@product) %>
     <%= form_with(url: cart_add_path, data: { turbo_frame: "_top" }) do |f| %>
       <%= f.hidden_field :id, value: @product.id %>
+
+      <div data-controller="checkbox-group" class="space-y-3 mb-4">
+        <% product.licenses.each_with_index do |license, index| %>
+          <div class="text-sm">
+            <label class="font-bold inline-flex items-center gap-2">
+              <%= check_box_tag "selected_license_id", license.id, index.zero?,
+                  data: { checkbox_group_target: "checkbox", action: "change->checkbox-group#toggle" } %>
+              <span>
+                <%= license.title_name %> —
+                <%= number_to_currency(license.price, precision: 2, strip_insignificant_zeros: true) %>
+              </span>
+            </label>
+          </div>
+        <% end %>
+      </div>
+
       <%= f.submit "Add to Cart" %>
     <% end %>
   <% end %>
