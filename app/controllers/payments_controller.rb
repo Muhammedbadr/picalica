@@ -46,25 +46,3 @@ class PaymentsController < ApplicationController
     })
   end
 end
-
-# def create
-#     # Use params[:product_id] if your route is nested
-#     @product = Product.find(params[:product_id])
-#     @user = Stripe::Customer.create({
-#       email: params[:email],
-#       name: params[:name],
-#     })
-#     # For now, let's use a temporary price since we are still setting up Licenses
-#     # Stripe needs an Integer in CENTS ($20.00 = 2000)
-#     # test_price = 2000
-
-#     payment_intent = Stripe::PaymentIntent.create({
-#       amount: params[:amount], # Amount in cents (e.g., $10.00 = 1000)
-#       currency: 'usd',
-#       payment_method_types: ['card'],
-#     })
-
-#     render json: {
-#       client_secret: payment_intent.client_secret,
-#     }
-#   end

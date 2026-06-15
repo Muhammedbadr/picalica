@@ -24,6 +24,11 @@ class Cart < ApplicationRecord
   def total
     cart_items.to_a.sum { |item| item.license&.price.to_f || item.product.licenses.first&.price.to_f }
   end
+
+  def total_price
+    total
+  end
+
   def ready_for_checkout?
     cart_items.all? { |item| item.license&.price.present? || item.product.licenses.first&.price.present? }
   end

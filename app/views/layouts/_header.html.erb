@@ -31,7 +31,7 @@
             <% end %>
             <%= link_to "My Products",  my_product_products_path, class: "text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity" %>
             <%= link_to "Purchases", orders_path, class: "text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity" %>          <% end %>
-            <%# Categories Mega Dropdown %>
+<%= link_to "Sales", sales_path, class: "text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity" %>            <%# Categories Mega Dropdown %>
           <div class="relative" id="categoriesWrapper">
             <button type="button"
               onclick="document.getElementById('categoriesWrapper').classList.toggle('open')"
@@ -98,7 +98,7 @@
                   </span>
                 <% end %>
               <% end %>
-</div>
+            </div>
             <%# ── USER AVATAR + DROPDOWN ── %>
             <div class="relative dropdown-wrapper" id="profileDropdown">
 
@@ -177,14 +177,14 @@
                       Shopping Carts
                     <% end %>
 
-                    <%= link_to "#",
+                    <%= link_to orders_path,
                         class: "flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-[#5D5899]/5 hover:text-[#5D5899] transition-all group mx-1 rounded-xl" do %>
                       <span class="w-7 h-7 rounded-lg bg-gray-100 group-hover:bg-[#5D5899]/10 flex items-center justify-center transition-colors">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"/>
                         </svg>
                       </span>
-                      Coupons
+                      Purchases
                     <% end %>
 
                     <%= link_to edit_user_registration_path,

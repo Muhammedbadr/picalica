@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get "cart_items/create"
   get "cart_items/update"
   get "cart_items/destroy"
-  
+
   get "carts/index"
   resources :products do
     resources :texts
@@ -25,22 +25,23 @@ Rails.application.routes.draw do
       get :my_product
     end
   end
-  
-  
+
+
   resources :roles
   devise_for :users
   resources :orders do
     resources :order_items
   end
-  post 'cart/add', to: 'cart_items#create', as: :cart_add
+  resources :sales, only: [ :index, :show ]
+  post "cart/add", to: "cart_items#create", as: :cart_add
   resources :users
-  resource :cart, only: [:show] do
+  resource :cart, only: [ :show ] do
     get  :pay
-    post :charge
+    get  :charge
   end
   resources :payments, only: :new
-  
-  resources :cart_items, only: [:create, :destroy]
+
+  resources :cart_items, only: [ :create, :destroy ]
    root to: "home#index"
    get "tags/:tag", to: "products#index", as: :tag
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

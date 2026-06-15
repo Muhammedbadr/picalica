@@ -1,0 +1,10 @@
+<% if @order&.order_items&.any? %>
+  <% @order.order_items.each do |item| %>
+    <div>
+      <%= item.product.title %>
+      <%= item.product.category.name if item.product.category %>
+    </div>
+  <% end %>
+<% else %>
+  <p>No order items.</p>
+<% end %>
