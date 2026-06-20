@@ -29,9 +29,10 @@
                           onclick: "alert('#{escape_javascript(alert_message)}');", 
                           class: "text-sm font-bold bg-white/10 px-3 py-1.5 rounded-lg hover:bg-white/20 transition-all" %>
             <% end %>
-            <%= link_to "My Products",  my_product_products_path, class: "text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity" %>
-            <%= link_to "Purchases", orders_path, class: "text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity" %>          <% end %>
-<%= link_to "Sales", sales_path, class: "text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity" %>            <%# Categories Mega Dropdown %>
+              <%= link_to "My Products",  my_product_products_path, class: "text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity" %>
+              <%= link_to "Purchases", orders_path, class: "text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity" %>
+              <%= link_to "Sales", sales_path, class: "text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity" %>     
+            <% end %>       <%# Categories Mega Dropdown %>
           <div class="relative" id="categoriesWrapper">
             <button type="button"
               onclick="document.getElementById('categoriesWrapper').classList.toggle('open')"

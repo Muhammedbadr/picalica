@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     end
     resources :product_files
     resources :views
+    resources :reviews
     resources :images
     resources :licenses
     resources :tags, only: [ :index, :create, :destroy ]

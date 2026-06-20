@@ -7,6 +7,11 @@ class CartsController < ApplicationController
   end
 
   def pay
+    unless @cart.ready_for_checkout?
+      redirect_to cart_path, alert: "Payment error: Some products are not configured for payment: #{@cart.misconfigured_products.to_sentence}"
+      return
+    end
+
     create_checkout_session
     redirect_to @checkout_session.url, allow_other_host: true
   rescue Stripe::InvalidRequestError, Stripe::AuthenticationError => e
