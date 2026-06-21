@@ -72,7 +72,5 @@ gem "stripe", "~> 19.0"
 gem 'active_storage_validations'
 gem 'client_side_validations'
 gem 'mini_magick'
-
-
-
 gem "ransack", "~> 4.4"
+gem "avo"

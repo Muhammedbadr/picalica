@@ -12,7 +12,7 @@ class User < ApplicationRecord
   validates :username, presence: true, uniqueness: true, allow_blank: true, on: :update
 
   has_many :user_roles
-  belongs_to :role, optional: true
+  has_many :roles, through: :user_roles
   has_many :products
   has_one :cart, dependent: :destroy
   has_many :reviews, dependent: :destroy
@@ -28,4 +28,6 @@ class User < ApplicationRecord
   def owns_product?(product)
     products.exists?(id: product.id)
   end
+
+  enum :role, { user: 0, admin: 1 }, default: :user  
 end
