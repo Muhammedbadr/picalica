@@ -17,6 +17,6 @@ services:
           name: picalica
           property: connectionString
       - key: RAILS_MASTER_KEY
-        sync: false 
-        key: RAILS_ENV
+        sync: false
+      - key: RAILS_ENV
         value: production                      
