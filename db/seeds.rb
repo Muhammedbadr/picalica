@@ -63,6 +63,15 @@ data = {
     "Other"
   ]
 }
+# Create the admin user
+admin = User.find_or_create_by!(email: 'admin@gmail.com') do |u|
+  u.name = 'Admin'
+  u.password = 'admin123456'
+  u.password_confirmation = 'admin123456'
+  # If you added the role column, add this:
+  u.role = 'admin' 
+end
+
 data.each do |cat_name, subs|
   category = Category.find_or_create_by!(name: cat_name)
   subs.each { |s| category.subcategories.find_or_create_by!(name: s) }
@@ -70,5 +79,6 @@ end
 puts "✓ Created #{Tag.count} tags"
 puts "✓ Created #{Category.count} categories"
 puts "✓ Created #{Subcategory.count} subcategories"
+puts "Admin user created: #{admin.email}"
 
 # db/seeds.rb
