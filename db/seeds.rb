@@ -64,12 +64,11 @@ data = {
   ]
 }
 # Create the admin user
-admin = User.find_or_create_by!(email: 'admin@gmail.com') do |u|
+User.find_or_create_by!(email: 'admin@gmail.com') do |u|
   u.name = 'Admin'
   u.password = 'admin123456'
   u.password_confirmation = 'admin123456'
-  # If you added the role column, add this:
-  u.role = 'admin' 
+  u.is_admin = true # Assuming you added the boolean flag
 end
 
 data.each do |cat_name, subs|
@@ -79,6 +78,6 @@ end
 puts "✓ Created #{Tag.count} tags"
 puts "✓ Created #{Category.count} categories"
 puts "✓ Created #{Subcategory.count} subcategories"
-puts "Admin user created: #{admin.email}"
+puts "Admin user created: #{User.find_by(email: 'admin@gmail.com').email}"
 
 # db/seeds.rb
